@@ -10,9 +10,9 @@ class Airline_Company(Base):
     id = Column(BigInteger(), primary_key=True, autoincrement=True)
     name = Column(Text(), unique=True, nullable=False)
     country_id = Column(BigInteger(), ForeignKey('countries.id'), nullable=False)
-    user_id = Column(BigInteger(), ForeignKey('users.id'), unique=True, nullable=False)
+    user_id = Column(BigInteger(), ForeignKey('users.id', ondelete='CASCADE'), unique=True, nullable=False)
 
-    user = relationship('User', backref=backref("airline_companies", uselist=False))
+    user = relationship('User', backref=backref("airline_companies", uselist=False, passive_deletes=True))
 
     def __eq__(self, other):
         if isinstance(other, Airline_Company):

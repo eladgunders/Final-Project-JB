@@ -8,14 +8,14 @@ class Flight(Base):
     __tablename__ = 'flights'
 
     id = Column(BigInteger(), primary_key=True, autoincrement=True)
-    airline_company_id = Column(BigInteger(), ForeignKey('airline_companies.id'), nullable=False)
+    airline_company_id = Column(BigInteger(), ForeignKey('airline_companies.id', ondelete='CASCADE'), nullable=False)
     origin_country_id = Column(BigInteger(), ForeignKey('countries.id'), nullable=False)
     destination_country_id = Column(BigInteger(), ForeignKey('countries.id'), nullable=False)
     departure_time = Column(DateTime(), nullable=False)
     landing_time = Column(DateTime(), nullable=False)
     remaining_tickets = Column(Integer(), nullable=False)
 
-    airline_company = relationship('Airline_Company', backref=backref("flights", uselist=True))
+    airline_company = relationship('Airline_Company', backref=backref("flights", uselist=True, passive_deletes=True))
     origin_county = relationship('Country', foreign_keys=[origin_country_id], backref=backref("oc_flights", uselist=True))
     destination_county = relationship('Country', foreign_keys=[destination_country_id], backref=backref("dc_flights", uselist=True))
 

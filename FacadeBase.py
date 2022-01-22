@@ -5,7 +5,6 @@ from DbRepo import DbRepo
 from db_config import local_session
 from Airline_Company import Airline_Company
 from Country import Country
-from Customer import Customer
 from User import User
 from User_Role import User_Role
 from sqlalchemy import extract
@@ -74,61 +73,6 @@ class FacadeBase(ABC):
         user.id = None
         self.repo.add(user)
         return True
-
-    def add_customer(self, user, customer):
-        if not isinstance(user, User):
-            print('Function failed, user must be an instance of the class User.')
-            return
-        if user.user_role != 1:
-            print('Function failed, user role must be 1(Customer).')
-            return
-        if self.create_user(user):
-            if not isinstance(customer, Customer):
-                print('Function failed. customer Must be an instance of the class Customer.')
-                return
-            if self.repo.get_by_condition(Customer,
-                                          lambda query: query.filter(Customer.phone_no == customer.phone_no).all()):
-                print('Function failed. a customer with this phone number already exists.')
-                return
-            if self.repo.get_by_condition(Customer,
-                                          lambda query: query.filter(
-                                              Customer.credit_card_no == customer.credit_card_no).all()):
-                print('Function failed. a customer with this credit card number already exists.')
-                return
-            customer.id = None
-            customer.user_id = user.id
-            self.repo.add(customer)
-            return True
-        else:
-            print('Function failed, user is not valid.')
-            return
-
-    def add_airline(self, user, airline):
-        if not isinstance(user, User):
-            print('Function failed, user must be an instance of the class User.')
-            return
-        if user.user_role != 2:
-            print('Function failed, user role must be 2(Airline Company).')
-            return
-        if self.create_user(user):
-            if not isinstance(airline, Airline_Company):
-                print('Function failed. airline Must be an instance of the class Airline_Company.')
-                return
-            if self.repo.get_by_condition(Airline_Company,
-                                          lambda query: query.filter(Airline_Company.name == airline.name).all()):
-                print('Function failed. An Airline with this name already exists.')
-                return
-            if not self.repo.get_by_condition(Country,
-                                          lambda query: query.filter(Country.id == airline.country_id).all()):
-                print('Function failed, airline.country_id does not exist in the db.')
-                return
-            airline.id = None
-            airline.user_id = user.id
-            self.repo.add(airline)
-            return True
-        else:
-            print('Function failed, user is not valid.')
-            return
 
     def get_all_countries(self):
         return self.repo.get_all(Country)

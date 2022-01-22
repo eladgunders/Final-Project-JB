@@ -3,10 +3,7 @@ from AdministratorFacade import AdministratorFacade
 from User import User
 from Administrator import Administrator
 from Customer import Customer
-from Flight import Flight
-from datetime import datetime
 from Airline_Company import Airline_Company
-from Ticket import Ticket
 
 
 @pytest.fixture(scope='session')
@@ -50,8 +47,61 @@ def test_administrator_facade_remove_administrator(dao_connection_singleton, adm
     assert actual == expected
 
 
-@pytest.mark.parametrize('customer_id, expected', [(1, True)])
+@pytest.mark.parametrize('customer_id, expected', [('f', None),
+                                                   (0, None),
+                                                   (3, None),
+                                                   (1, True),
+                                                   (2, True)])
 def test_administrator_facade_remove_customer(dao_connection_singleton, customer_id, expected):
     actual = dao_connection_singleton.remove_customer(customer_id)
+    assert actual == expected
+
+
+@pytest.mark.parametrize('airline_id, expected', [('f', None),
+                                                  (-1, None),
+                                                  (4, None),
+                                                  (1, True)])
+def test_administrator_facade_remove_airline(dao_connection_singleton, airline_id, expected):
+    actual = dao_connection_singleton.remove_airline(airline_id)
+    assert actual == expected
+
+
+@pytest.mark.parametrize('user, customer, expected', [(1, 1, None), (User(username='Elad', password='123', email='eladi@gmail.com', user_role=2),
+                                                       Customer(first_name='kk', last_name='lk', address='Sokolov 1',
+                                                        phone_no='0545557000', credit_card_no='0099', user_id=1) , None),
+                                                      (User(username='Elados', password='123', email='eladi@gmail.coom', user_role=2),
+                                                       Customer(first_name='kk', last_name='lk', address='Sokolov 1',
+                                                                phone_no='0545557000', credit_card_no='0099', user_id=1), None),
+                                                      (User(username='Elad', password='123', email='eladi@gmail.com', user_role=1),
+                                                       Customer(first_name='kk', last_name='lk', address='Sokolov 1',
+                                                        phone_no='0545557000', credit_card_no='0099', user_id=1) , None),
+                                                      (User(username='Elados', password='123', email='eladi@gmail.coom', user_role=2),
+                                                       'g', None),
+                                                      (User(username='Elados', password='123', email='eladii@gmail.com', user_role=1),
+                                                       Customer(first_name='kk', last_name='lk', address='Sokolov 1',
+                                                        phone_no='0545557007', credit_card_no='0099', user_id=1) , None),
+                                                      (User(username='Elados', password='123', email='eladii@gmail.com', user_role=1),
+                                                       Customer(first_name='kk', last_name='lk', address='Sokolov 1',
+                                                        phone_no='0545557004', credit_card_no='0000', user_id=1) , None),
+                                                      (User(username='Elados', password='123', email='eladii@gmail.com', user_role=1),
+                                                       Customer(first_name='kk', last_name='lk', address='Sokolov 1',
+                                                        phone_no='0545557004', credit_card_no='0055', user_id=8) , True)
+                                                      ])
+def test_administrator_facade_add_customer(dao_connection_singleton, user, customer, expected):
+    actual = dao_connection_singleton.add_customer(user, customer)
+    assert actual == expected
+
+
+@pytest.mark.parametrize('user, airline, expected', [(1, 1, None),
+                                                     (User(username='Elad', password='123', email='eladi@gmail.com', user_role=1), 1, None),
+                                                     (User(username='Eladi', password='123', email='eladi@gmail.com', user_role=2), 1, None),
+                                                     (User(username='Eladi', password='123', email='eladi@gmail.com', user_role=2),
+                                                      Airline_Company(name='Yoni', country_id=1, user_id=3), None),
+                                                     (User(username='Eladi', password='123', email='eladi@gmail.com', user_role=2),
+                                                      Airline_Company(name='Yonchkin', country_id=3, user_id=3), None),
+                                                     (User(username='Eladi', password='123', email='eladi@gmail.com', user_role=2),
+                                                      Airline_Company(name='Yonchkin', country_id=1, user_id=8), True)])
+def test_administrator_facade_add_airline(dao_connection_singleton, user, airline, expected):
+    actual = dao_connection_singleton.add_airline(user, airline)
     assert actual == expected
 

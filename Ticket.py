@@ -8,12 +8,12 @@ class Ticket(Base):
     __tablename__ = 'tickets'
 
     id = Column(BigInteger(), primary_key=True, autoincrement=True)
-    flight_id = Column(BigInteger(), ForeignKey('flights.id'), nullable=False)
+    flight_id = Column(BigInteger(), ForeignKey('flights.id', ondelete='CASCADE'), nullable=False)
     customer_id = Column(BigInteger(), ForeignKey('customers.id', ondelete='CASCADE'), nullable=False)
 
     __table_args__ = (UniqueConstraint('flight_id', 'customer_id', name='una_1'),)  # customer can buy 1 ticket per flight
 
-    flight = relationship("Flight", backref=backref("tickets", uselist=True))
+    flight = relationship("Flight", backref=backref("tickets", uselist=True, passive_deletes=True))
     customer = relationship("Customer", backref=backref("tickets", uselist=True, passive_deletes=True))
 
     def __eq__(self, other):

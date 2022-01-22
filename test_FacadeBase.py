@@ -5,7 +5,6 @@ from Country import Country
 from Airline_Company import Airline_Company
 from datetime import datetime
 from User import User
-from Customer import Customer
 
 
 @pytest.fixture(scope='session')
@@ -93,44 +92,4 @@ def test_facade_base_get_country_by_id(dao_connection_singleton, id_, expected):
                                             (User(username='Elados', password='123', email='eladi@gmail.coom', user_role=2), True)])
 def test_facade_base_create_user(dao_connection_singleton, user, expected):
     actual = dao_connection_singleton.create_user(user)
-    assert actual == expected
-
-
-@pytest.mark.parametrize('user, customer, expected', [(1, 1, None), (User(username='Elad', password='123', email='eladi@gmail.com', user_role=2),
-                                                       Customer(first_name='kk', last_name='lk', address='Sokolov 1',
-                                                        phone_no='0545557000', credit_card_no='0099', user_id=1) , None),
-                                                      (User(username='Elados', password='123', email='eladi@gmail.coom', user_role=2),
-                                                       Customer(first_name='kk', last_name='lk', address='Sokolov 1',
-                                                                phone_no='0545557000', credit_card_no='0099', user_id=1), None),
-                                                      (User(username='Elad', password='123', email='eladi@gmail.com', user_role=1),
-                                                       Customer(first_name='kk', last_name='lk', address='Sokolov 1',
-                                                        phone_no='0545557000', credit_card_no='0099', user_id=1) , None),
-                                                      (User(username='Elados', password='123', email='eladi@gmail.coom', user_role=2),
-                                                       'g', None),
-                                                      (User(username='Elados', password='123', email='eladii@gmail.com', user_role=1),
-                                                       Customer(first_name='kk', last_name='lk', address='Sokolov 1',
-                                                        phone_no='0545557007', credit_card_no='0099', user_id=1) , None),
-                                                      (User(username='Elados', password='123', email='eladii@gmail.com', user_role=1),
-                                                       Customer(first_name='kk', last_name='lk', address='Sokolov 1',
-                                                        phone_no='0545557004', credit_card_no='0000', user_id=1) , None),
-                                                      (User(username='Elados', password='123', email='eladii@gmail.com', user_role=1),
-                                                       Customer(first_name='kk', last_name='lk', address='Sokolov 1',
-                                                        phone_no='0545557004', credit_card_no='0055', user_id=8) , True)
-                                                      ])
-def test_facade_base_add_customer(dao_connection_singleton, user, customer, expected):
-    actual = dao_connection_singleton.add_customer(user, customer)
-    assert actual == expected
-
-
-@pytest.mark.parametrize('user, airline, expected', [(1, 1, None),
-                                                     (User(username='Elad', password='123', email='eladi@gmail.com', user_role=1), 1, None),
-                                                     (User(username='Eladi', password='123', email='eladi@gmail.com', user_role=2), 1, None),
-                                                     (User(username='Eladi', password='123', email='eladi@gmail.com', user_role=2),
-                                                      Airline_Company(name='Yoni', country_id=1, user_id=3), None),
-                                                     (User(username='Eladi', password='123', email='eladi@gmail.com', user_role=2),
-                                                      Airline_Company(name='Yonchkin', country_id=3, user_id=3), None),
-                                                     (User(username='Eladi', password='123', email='eladi@gmail.com', user_role=2),
-                                                      Airline_Company(name='Yonchkin', country_id=1, user_id=8), True)])
-def test_facade_base_add_airline(dao_connection_singleton, user, airline, expected):
-    actual = dao_connection_singleton.add_airline(user, airline)
     assert actual == expected
