@@ -13,7 +13,6 @@ from DbRepo import DbRepo
 
 
 repo = DbRepo(local_session)
-repo.drop_all_tables()
-create_all_entities()  # create tables if not exist
-# repo.add_2_rows_for_each_table()
-#repo.reset_test_db()
+#repo.drop_all_tables()
+#create_all_entities()  # create tables if not exist
+

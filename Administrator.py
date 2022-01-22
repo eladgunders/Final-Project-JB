@@ -15,9 +15,9 @@ class Administrator(Base):
     user = relationship('User', backref=backref("administrators", uselist=False, passive_deletes=True))
 
     def __repr__(self):
-        return f'Administrator(id={Administrator.id}, first_name={Administrator.first_name}, last_name={Administrator.last_name}, ' \
-               f'user_id={Administrator.user_id})'
+        return f'Administrator(id={self.id}, first_name={self.first_name}, last_name={self.last_name}, ' \
+               f'user_id={self.user_id})'
 
     def __str__(self):
-        return f'Administrator[id={Administrator.id}, first_name={Administrator.first_name}, last_name={Administrator.last_name}, ' \
-               f'user_id={Administrator.user_id}]'
+        return f'Administrator[id={self.id}, first_name={self.first_name}, last_name={self.last_name}, ' \
+               f'user_id={self.user_id}]'

@@ -1,4 +1,4 @@
-from sqlalchemy import asc, text, desc
+from sqlalchemy import asc, text, desc, extract
 from Customer import Customer
 from Administrator import Administrator
 from Airline_Company import Airline_Company
@@ -48,6 +48,33 @@ class DbRepo:
     def update_by_id(self, table_class, id_column_name, id_, data):  # data is a dictionary of all the new columns and values
         self.local_session.query(table_class).filter(id_column_name == id_).update(data)
         self.local_session.commit()
+
+    def get_airlines_by_country(self, country_id):
+        return self.local_session.query(Airline_Company).filter(Airline_Company.country_id == country_id).all()
+
+    def get_flights_by_destination_country_id(self, country_id):
+        return self.local_session.query(Flight).filter(Flight.destination_country_id == country_id).all()
+
+    def get_flights_by_origin_country_id(self, country_id):
+        return self.local_session.query(Flight).filter(Flight.origin_country_id == country_id).all()
+
+    def get_flights_by_departure_date(self, departure_date):
+        return self.local_session.query(Flight).filter(extract('year', Flight.departure_date) == departure_date.year,
+                                                       extract('month', Flight.departure_date) == departure_date.month,
+                                                       extract('day', Flight.departure_date) == departure_date.day).all()
+
+    def get_flights_by_landing_date(self, landing_date):
+        return self.local_session.query(Flight).filter(extract('year', Flight.departure_date) == landing_date.year,
+                                                       extract('month', Flight.departure_date) == landing_date.month,
+                                                       extract('day',
+                                                               Flight.departure_date) == landing_date.day).all()
+
+    def get_flights_by_customer(self, customer_id):
+        flights_ls = []
+        tickets = self.local_session.query(Ticket).filter(Ticket.customer_id == customer_id).all()
+        for ticket in tickets:
+            flights_ls.append(ticket.flight)
+        return flights_ls
 
     def drop_all_tables(self):
         self.local_session.execute('DROP TABLE users CASCADE')

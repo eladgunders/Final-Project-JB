@@ -16,9 +16,9 @@ class User(Base):
     role = relationship('User_Role', backref=backref("users", uselist=True))
 
     def __repr__(self):
-        return f'User(id={User.id}, username={User.username}, password={User.password}, email={User.email}, ' \
-               f'user_role={User.user_role})'
+        return f'User(id={self.id}, username={self.username}, password={self.password}, email={self.email}, ' \
+               f'user_role={self.user_role})'
 
     def __str__(self):
-        return f'User[id={User.id}, username={User.username}, password={User.password}, email={User.email}, ' \
-               f'user_role={User.user_role}]'
+        return f'User[id={self.id}, username={self.username}, password={self.password}, email={self.email}, ' \
+               f'user_role={self.user_role}]'

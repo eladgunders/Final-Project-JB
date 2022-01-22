@@ -26,11 +26,11 @@ class Customer(Base):
             return False
 
     def __repr__(self):
-        return f'Customer(id={Customer.id}, first_name={Customer.first_name}, last_name={Customer.last_name}, ' \
-               f'address={Customer.address}, phone_no={Customer.phone_no}, credit_card_no={Customer.credit_card_no}, ' \
-               f'user_id={Customer.user_id})'
+        return f'Customer(id={self.id}, first_name={self.first_name}, last_name={self.last_name}, ' \
+               f'address={self.address}, phone_no={self.phone_no}, credit_card_no={self.credit_card_no}, ' \
+               f'user_id={self.user_id})'
 
     def __str__(self):
-        return f'Customer[id={Customer.id}, first_name={Customer.first_name}, last_name={Customer.last_name}, ' \
-               f'address={Customer.address}, phone_no={Customer.phone_no}, credit_card_no={Customer.credit_card_no}, ' \
-               f'user_id={Customer.user_id}]'
+        return f'Customer[id={self.id}, first_name={self.first_name}, last_name={self.last_name}, ' \
+               f'address={self.address}, phone_no={self.phone_no}, credit_card_no={self.credit_card_no}, ' \
+               f'user_id={self.user_id}]'

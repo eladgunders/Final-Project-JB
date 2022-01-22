@@ -23,7 +23,7 @@ class Ticket(Base):
             return False
 
     def __repr__(self):
-        return f'Ticket(id={Ticket.id}, flight_id={Ticket.flight_id}, customer_id={Ticket.customer_id})'
+        return f'Ticket(id={self.id}, flight_id={self.flight_id}, customer_id={self.customer_id})'
 
     def __str__(self):
-        return f'Ticket[id={Ticket.id}, flight_id={Ticket.flight_id}, customer_id={Ticket.customer_id}]'
+        return f'Ticket[id={self.id}, flight_id={self.flight_id}, customer_id={self.customer_id}]'

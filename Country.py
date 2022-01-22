@@ -17,7 +17,7 @@ class Country(Base):
             return self.id == other.id and self.name == other.name
 
     def __repr__(self):
-        return f'Country(id={Country.id}, name={Country.name})'
+        return f'Country(id={self.id}, name={self.name})'
 
     def __str__(self):
-        return f'Country[id={Country.id}, name={Country.name}]'
+        return f'Country[id={self.id}, name={self.name}]'

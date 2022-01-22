@@ -22,9 +22,9 @@ class Airline_Company(Base):
             return False
 
     def __repr__(self):
-        return f'Airline_Company(id={Airline_Company.id}, name={Airline_Company.name}' \
-               f', country_id={Airline_Company.country_id}, user_id={Airline_Company.user_id})'
+        return f'Airline_Company(id={self.id}, name={self.name}' \
+               f', country_id={self.country_id}, user_id={self.user_id})'
 
     def __str__(self):
-        return f'Airline_Company[id={Airline_Company.id}, name={Airline_Company.name}' \
-               f', country_id={Airline_Company.country_id}, user_id={Airline_Company.user_id}]'
+        return f'Airline_Company[id={self.id}, name={self.name}' \
+               f', country_id={self.country_id}, user_id={self.user_id}]'

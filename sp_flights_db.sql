@@ -81,3 +81,43 @@ language plpgsql AS
 			from tickets t where t.customer_id = _customer_id;
 		end;
 	$$;
+
+--sp_get_arrival_flights
+CREATE or replace function sp_get_arrival_flights
+(_country_id int)
+returns TABLE(id bigint, airline_company_id bigint, origin_country_id bigint, destination_country_id bigint, departure_time timestamp,
+			 landing_time timestamp, remaining_tickets int)
+language plpgsql AS
+	$$
+		BEGIN
+			return QUERY
+			select * from flights where (now() AT TIME ZONE 'UTC' + interval '14 hours') > flights.landing_time and flights.destination_country_id = _country_id;
+		end;
+	$$;
+
+--sp_get_departure_flights
+CREATE or replace function sp_get_departure_flights
+(_country_id int)
+returns TABLE(id bigint, airline_company_id bigint, origin_country_id bigint, destination_country_id bigint, departure_time timestamp,
+			 landing_time timestamp, remaining_tickets int)
+language plpgsql AS
+	$$
+		BEGIN
+			return QUERY
+			select * from flights where (now() AT TIME ZONE 'UTC' + interval '14 hours') > flights.departure_time and flights.origin_country_id = _country_id;
+		end;
+	$$;
+
+--sp_get_flights_by_parameters
+CREATE or replace function sp_get_flights_by_parameters
+(_origin_country_id int, _destination_country_id int, _date date)
+returns TABLE(id bigint, airline_company_id bigint, origin_country_id bigint, destination_country_id bigint, departure_time timestamp,
+			 landing_time timestamp, remaining_tickets int)
+language plpgsql AS
+	$$
+		BEGIN
+			return QUERY
+			select * from flights where date(flights.departure_time) = _date and flights.origin_country_id = _origin_country_id
+			and flights.destination_country_id = _destination_country_id;
+		end;
+	$$;

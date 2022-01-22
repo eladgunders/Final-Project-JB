@@ -11,7 +11,7 @@ class User_Role(Base):
     role_name = Column(Text(), unique=True, nullable=False)
 
     def __repr__(self):
-        return f'User_Role(id={User_Role.id}, role_name={User_Role.role_name})'
+        return f'User_Role(id={self.id}, role_name={self.role_name})'
 
     def __str__(self):
-        return f'User_Role[id={User_Role.id}, role_name={User_Role.role_name}]'
+        return f'User_Role[id={self.id}, role_name={self.role_name}]'
