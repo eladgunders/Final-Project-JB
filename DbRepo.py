@@ -76,6 +76,65 @@ class DbRepo:
             flights_ls.append(ticket.flight)
         return flights_ls
 
+    def sp_get_airline_by_username(self, _username):
+        stmt = text('select * from sp_get_airline_by_username(:username)').bindparams(username=_username)
+        airline_cursor = self.local_session.execute(stmt)
+        airline = [air1 for air1 in airline_cursor][0]
+        return airline
+
+    def sp_get_customer_by_username(self, _username):
+        stmt = text('select * from sp_get_customer_by_username(:username)').bindparams(username=_username)
+        customer_cursor = self.local_session.execute(stmt)
+        customer = [cus1 for cus1 in customer_cursor][0]
+        return customer
+
+    def sp_get_user_by_username(self, _username):
+        stmt = text('select * from sp_get_user_by_username(:username)').bindparams(username=_username)
+        user_cursor = self.local_session.execute(stmt)
+        user = [us1 for us1 in user_cursor][0]
+        return user
+
+    def sp_get_flights_by_airline_id(self, _airline_id):
+        stmt = text('select * from sp_get_flights_by_airline_id(:airline_id)').bindparams(airline_id=_airline_id)
+        flights_cursor = self.local_session.execute(stmt)
+        flights = [flight for flight in flights_cursor]
+        return flights
+
+    def sp_get_tickets_by_customer_id(self, _customer_id):
+        stmt = text('select * from sp_get_tickets_by_customer_id(:customer_id)').bindparams(customer_id=_customer_id)
+        tickets_cursor = self.local_session.execute(stmt)
+        tickets = [ticket for ticket in tickets_cursor]
+        return tickets
+
+    def sp_get_arrival_flights(self, _country_id):  # returns all the flights that arrive to the country_id in the next 12 hours
+        stmt = text('select * from sp_get_arrival_flights(:country_id)').bindparams(country_id=_country_id)
+        flights_cursor = self.local_session.execute(stmt)
+        flights = [flight for flight in flights_cursor]
+        return flights
+
+    def sp_get_departure_flights(self, _country_id):  # returns all the flights that departure to the country_id in the next 12 hours
+        stmt = text('select * from sp_get_departure_flights(:country_id)').bindparams(country_id=_country_id)
+        flights_cursor = self.local_session.execute(stmt)
+        flights = [flight for flight in flights_cursor]
+        return flights
+
+    def sp_get_flights_by_parameters(self, _origin_country_id, _destination_country_id, _date):
+        stmt = text('select * from sp_get_flights_by_parameters(:origin_country_id, :destination_country_id, :date)')\
+            .bindparams(origin_country_id=_origin_country_id, destination_country_id=_destination_country_id, date=_date)
+        flights_cursor = self.local_session.execute(stmt)
+        flights = [flight for flight in flights_cursor]
+        return flights
+
+    def create_all_sp(self, file):
+        try:
+            with open(file, 'r') as sp_file:
+                queries = sp_file.read().split('|||')
+            for query in queries:
+                self.local_session.execute(query)
+            self.local_session.commit()
+        except FileNotFoundError:
+            print('Function "create_all_sp" failed. File not found.')
+
     def drop_all_tables(self):
         self.local_session.execute('DROP TABLE users CASCADE')
         self.local_session.execute('DROP TABLE user_roles CASCADE')

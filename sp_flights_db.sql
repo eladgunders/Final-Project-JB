@@ -1,4 +1,3 @@
--- sp_get_airline_by_username
 CREATE or replace function sp_get_airline_by_username
 (_username text)
 returns TABLE(id bigint, name text, country_id bigint,
@@ -13,8 +12,7 @@ language plpgsql AS
 			where u.username = _username;
 		end;
 	$$;
-
--- sp_get_customer_by_username
+|||
 CREATE or replace function sp_get_customer_by_username
 (_username text)
 returns TABLE(id bigint, first_name text, last_name text,
@@ -31,8 +29,7 @@ language plpgsql AS
 			where u.username = _username;
 		end;
 	$$;
-
--- sp_get_user_by_username
+|||
 CREATE or replace function sp_get_user_by_username
 (_username text)
 returns TABLE(id bigint, username text, password text,
@@ -46,8 +43,7 @@ language plpgsql AS
 			where u.username = _username;
 		end;
 	$$;
-
---sp_get_flights_by_airline_id
+|||
 CREATE or replace function sp_get_flights_by_airline_id
 (_airline_id bigint)
 returns TABLE(id bigint, airline_company_id bigint,
@@ -67,8 +63,7 @@ language plpgsql AS
 			where f.airline_company_id = _airline_id;
 		end;
 	$$;
-
---sp_get_tickets_by_customer_id
+|||
 CREATE or replace function sp_get_tickets_by_customer_id
 (_customer_id bigint)
 returns TABLE(id bigint, flight_id bigint,
@@ -81,8 +76,7 @@ language plpgsql AS
 			from tickets t where t.customer_id = _customer_id;
 		end;
 	$$;
-
---sp_get_arrival_flights
+|||
 CREATE or replace function sp_get_arrival_flights
 (_country_id int)
 returns TABLE(id bigint, airline_company_id bigint, origin_country_id bigint, destination_country_id bigint, departure_time timestamp,
@@ -94,8 +88,7 @@ language plpgsql AS
 			select * from flights where (now() AT TIME ZONE 'UTC' + interval '14 hours') > flights.landing_time and flights.destination_country_id = _country_id;
 		end;
 	$$;
-
---sp_get_departure_flights
+|||
 CREATE or replace function sp_get_departure_flights
 (_country_id int)
 returns TABLE(id bigint, airline_company_id bigint, origin_country_id bigint, destination_country_id bigint, departure_time timestamp,
@@ -107,8 +100,7 @@ language plpgsql AS
 			select * from flights where (now() AT TIME ZONE 'UTC' + interval '14 hours') > flights.departure_time and flights.origin_country_id = _country_id;
 		end;
 	$$;
-
---sp_get_flights_by_parameters
+|||
 CREATE or replace function sp_get_flights_by_parameters
 (_origin_country_id int, _destination_country_id int, _date date)
 returns TABLE(id bigint, airline_company_id bigint, origin_country_id bigint, destination_country_id bigint, departure_time timestamp,
