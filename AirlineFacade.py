@@ -8,28 +8,22 @@ from NotLegalFlightTimesError import NotLegalFlightTimesError
 
 class AirlineFacade(FacadeBase):
 
-    def __init__(self):
+    def __init__(self, login_token):
+        self.login_token = login_token
         super().__init__()
 
-    def get_flights_by_airline_id(self, airline_id):
-        if not isinstance(airline_id, int):
-            print('Function failed, airline_id must be an integer.')
+    def get_airline_flights(self):  # returns all the flight for the login token airline
+        if self.login_token.role != 'Airline_Company':
+            print('Function failed, login_token is not Airline_Company.')
             return
-        if airline_id <= 0:
-            print('Function failed, airline_id must be positive.')
-            return
-        air_line_ = self.repo.get_by_condition(Airline_Company, lambda query: query.filter(Airline_Company.id == airline_id).all())
-        if not air_line_:
-            print('Function failed, no such airline in the db, id is wrong.')
-            return
-        return self.repo.get_by_condition(Flight, lambda query: query.filter(Flight.airline_company_id == airline_id).all())
+        return self.repo.get_by_condition(Flight, lambda query: query.filter(Flight.airline_company_id == self.login_token.id).all())
 
     def add_flight(self, flight):
+        if self.login_token.role != 'Airline_Company':
+            print('Function failed, login_token is not Airline_Company.')
+            return
         if not isinstance(flight, Flight):
             print('Function failed, flight must be an instance of the class Flight.')
-            return
-        if not self.repo.get_by_condition(Airline_Company, lambda query: query.filter(Airline_Company.id == flight.airline_company_id).all()):
-            print('Function failed, airline_company_id does not exist in airline_company table.')
             return
         if not self.repo.get_by_condition(Country, lambda query: query.filter(Country.id == flight.origin_country_id).all()):
             print('Function failed, origin_country_id does not exist in countries table.')
@@ -50,20 +44,38 @@ class AirlineFacade(FacadeBase):
             print('Function failed, remaining tickets must be 100 or more.')
             return
         flight.id = None
+        flight.airline_company_id = self.login_token.id
         self.repo.add(flight)
         return True
 
+    def remove_flight(self, flight_id):
+        if self.login_token.role != 'Airline_Company':
+            print('Function failed, login_token is not Airline_Company.')
+            return
+        if not isinstance(flight_id, int):
+            print('Function failed, flight_id must be integer.')
+            return
+        if flight_id <= 0:
+            print('Function failed, flight_id must be positive.')
+            return
+        flight = self.repo.get_by_condition(Flight, lambda query: query.filter(Flight.id == flight_id).all())
+        if not flight:
+            print('Function failed, flight not exists in the db, wrong flight_id.')
+            return
+        if self.login_token.id != flight[0].airline_company_id:
+            print('Function failed, the flight wasnt created by the login token airline.')
+            return
+        self.repo.delete_by_id(Flight, Flight.id, flight_id)
+        return True
+
     def update_airline(self, airline):
+        if self.login_token.role != 'Airline_Company':
+            print('Function failed, login_token is not Airline_Company.')
+            return
         if not isinstance(airline, Airline_Company):
             print('Function failed, airline must be an instance of the class Airline_Company')
             return
-        if not isinstance(airline.id, int):
-            print('Function failed, airline.id must be an integer.')
-            return
-        if airline.id <= 0:
-            print('Function failed, airline.id must be greater than 0.')
-            return
-        airline_ = self.repo.get_by_condition(Airline_Company, lambda query: query.filter(Airline_Company.id == airline.id).all())
+        airline_ = self.repo.get_by_condition(Airline_Company, lambda query: query.filter(Airline_Company.id == self.login_token.id).all())
         if not airline_:
             print('Function failed, no such airline in the db, wrong id.')
             return
@@ -74,11 +86,14 @@ class AirlineFacade(FacadeBase):
         if not self.repo.get_by_condition(Country, lambda query: query.filter(Country.id == airline.country_id).all()):
             print('Function failed, no such country in the db. wrong airline.country_id')
             return
-        self.repo.update_by_id(Airline_Company, Airline_Company.id, airline.id, {Airline_Company.name: airline.name,
+        self.repo.update_by_id(Airline_Company, Airline_Company.id, self.login_token.id, {Airline_Company.name: airline.name,
                                                                                  Airline_Company.country_id: airline.country_id})
         return True
 
     def update_flight(self, flight):
+        if self.login_token.role != 'Airline_Company':
+            print('Function failed, login_token is not Airline_Company.')
+            return
         if not isinstance(flight, Flight):
             print('Function failed, flight must be an instance of the class Flight.')
             return
@@ -87,6 +102,13 @@ class AirlineFacade(FacadeBase):
             return
         if flight.id <= 0:
             print('Function failed, flight.id must be positive.')
+            return
+        flight_ = self.repo.get_by_condition(Flight, lambda query: query.filter(Flight.id == flight.id).all())
+        if not flight_:
+            print('Function failed, flight not found in the db, wrong flight.id.')
+            return
+        if flight_[0].airline_company_id != self.login_token.id:
+            print('Function failed, flight not created by the login token airline.')
             return
         if not isinstance(flight.origin_country_id, int) or not isinstance(flight.destination_country_id, int):
             print('Function failed, both countries_id must be integers.')
@@ -111,10 +133,6 @@ class AirlineFacade(FacadeBase):
             return
         if flight.remaining_tickets < 0:
             print('Function failed, remaining tickets must be 100 or more.')
-            return
-        flight_ = self.repo.get_by_condition(Flight, lambda query: query.filter(Flight.id == flight.id).all())
-        if not flight_:
-            print('Function failed, flight not found in the db, wrong flight.id.')
             return
         self.repo.update_by_id(Flight, Flight.id, flight.id, {Flight.origin_country_id: flight.origin_country_id,
                                                               Flight.destination_country_id: flight.destination_country_id,

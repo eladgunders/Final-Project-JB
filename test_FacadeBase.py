@@ -93,3 +93,13 @@ def test_facade_base_get_country_by_id(dao_connection_singleton, id_, expected):
 def test_facade_base_create_user(dao_connection_singleton, user, expected):
     actual = dao_connection_singleton.create_user(user)
     assert actual == expected
+
+
+@pytest.mark.parametrize('airline_id, expected', [('not int', None),
+                                                  (0, None),
+                                                  (7, None),
+                                                  (1, [Flight(id=1, airline_company_id=1, origin_country_id=1, destination_country_id=2,
+                        departure_time=datetime(2022, 1, 30, 16, 0, 0), landing_time=datetime(2022, 1, 30, 20, 0, 0), remaining_tickets=200)])])
+def test_airline_facade_get_flights_by_airline(dao_connection_singleton, airline_id, expected):
+    actual = dao_connection_singleton.get_flights_by_airline_id(airline_id)
+    assert actual == expected

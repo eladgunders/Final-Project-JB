@@ -1,12 +1,14 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
+from configparser import ConfigParser
+from Logger import Logger
+import logging
 
+config = ConfigParser()
+config.read("config.conf")
+connection_string = config["db"]["conn_string"]
 
-# user-name: postgres
-# password: admin
-# database: sqlalchemy_test
-connection_string = 'postgresql+psycopg2://postgres:admin@localhost/flights_db_tests'
-
+logger = Logger.get_instance()
 # if you want to create a table from base the class needs to inherit from declarative_base
 Base = declarative_base()
 
@@ -17,3 +19,4 @@ local_session = Session(bind=engine)
 # creates a table to all classes that inherits from Base
 def create_all_entities():
     Base.metadata.create_all(engine)
+    logger.logger.debug('Created all sql tables.')

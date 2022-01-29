@@ -6,17 +6,26 @@ from Ticket import Ticket
 from Airline_Company import Airline_Company
 from Administrator import Administrator
 from Country import Country
+from Logger import Logger
 
 
 class AdministratorFacade(FacadeBase):
 
-    def __init__(self):
+    def __init__(self, login_token):
+        self.login_token = login_token
+        self.logger = Logger.get_instance()
         super().__init__()
 
     def get_all_customers(self):
+        if self.login_token.role != 'Administrator':
+            print('Function failed, login_token in not Administrator.')
+            return
         return self.repo.get_all(Customer)
 
     def add_administrator(self, user, administrator):
+        if self.login_token.role != 'Administrator':
+            print('Function failed, login_token in not Administrator.')
+            return
         if not isinstance(user, User):
             print('Function failed, user must be an instance of the class User.')
             return
@@ -36,6 +45,9 @@ class AdministratorFacade(FacadeBase):
             return
 
     def remove_administrator(self, administrator_id):
+        if self.login_token.role != 'Administrator':
+            print('Function failed, login_token in not Administrator.')
+            return
         if not isinstance(administrator_id, int):
             print('Function failed customer_id must be an integer.')
             return
@@ -50,6 +62,9 @@ class AdministratorFacade(FacadeBase):
         return True
 
     def remove_airline(self, airline_id):
+        if self.login_token.role != 'Administrator':
+            print('Function failed, login_token in not Administrator.')
+            return
         if not isinstance(airline_id, int):
             print('Function failed, id must be an integer.')
             return
@@ -63,7 +78,10 @@ class AdministratorFacade(FacadeBase):
         self.repo.delete_by_id(User, User.id, airline[0].user.id)
         return True
 
-    def remove_customer(self, customer_id):  # needs to add to remaining tickets all the tickets this customer has
+    def remove_customer(self, customer_id):
+        if self.login_token.role != 'Administrator':
+            print('Function failed, login_token in not Administrator.')
+            return
         if not isinstance(customer_id, int):
             print('Function failed, customer_id must be an integer.')
             return
@@ -84,33 +102,41 @@ class AdministratorFacade(FacadeBase):
 
     def add_customer(self, user, customer):
         if not isinstance(user, User):
-            print('Function failed, user must be an instance of the class User.')
+            self.logger.logger.error(
+                f'the user "{user}" that was sent to the function add_customer is not a User instance.')
             return
         if user.user_role != 1:
-            print('Function failed, user role must be 1(Customer).')
+            self.logger.logger.error(f'the user.user_role "{user.user_role}" is not 1(Customer).')
             return
         if self.create_user(user):
             if not isinstance(customer, Customer):
-                print('Function failed. customer Must be an instance of the class Customer.')
+                self.logger.logger.error(
+                    f'the customer "{customer}" that was sent to the function add_customer is not a Customer instance.')
                 return
             if self.repo.get_by_condition(Customer,
                                           lambda query: query.filter(Customer.phone_no == customer.phone_no).all()):
-                print('Function failed. a customer with this phone number already exists.')
+                self.logger.logger.error(
+                    f'the customer.phone_no "{customer.phone_no}" that was sent the function add_customer is already exists in the db.')
                 return
             if self.repo.get_by_condition(Customer,
                                           lambda query: query.filter(
                                               Customer.credit_card_no == customer.credit_card_no).all()):
-                print('Function failed. a customer with this credit card number already exists.')
+                self.logger.logger.error(
+                    f'the customer.credit_card_no "{customer.credit_card_no}" that was sent the function add_customer is already exists in the db.')
                 return
             customer.id = None
             customer.user_id = user.id
+            self.logger.logger.debug(f'A Customer "{customer}" connected by the User "{user}" has been added to the db.')
             self.repo.add(customer)
             return True
         else:
-            print('Function failed, user is not valid.')
+            self.logger.logger.error(f'The function add_customer failed - the User "{user}" that was sent is not valid.')
             return
 
     def add_airline(self, user, airline):
+        if self.login_token.role != 'Administrator':
+            print('Function failed, login_token in not Administrator.')
+            return
         if not isinstance(user, User):
             print('Function failed, user must be an instance of the class User.')
             return
