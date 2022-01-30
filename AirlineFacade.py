@@ -217,4 +217,3 @@ class AirlineFacade(FacadeBase):
                                                               Flight.landing_time: flight.landing_time,
                                                               Flight.remaining_tickets: flight.remaining_tickets})
         return True
-
