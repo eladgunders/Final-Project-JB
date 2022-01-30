@@ -9,6 +9,7 @@ from User import User
 from User_Role import User_Role
 from sqlalchemy import extract
 from Logger import Logger
+from LoginToken import LoginToken
 
 
 class FacadeBase(ABC):
