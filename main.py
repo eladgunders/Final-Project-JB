@@ -1,5 +1,3 @@
-from datetime import datetime
-from sqlalchemy import text
 from db_config import local_session, create_all_entities
 from Flight import Flight
 from Country import Country
