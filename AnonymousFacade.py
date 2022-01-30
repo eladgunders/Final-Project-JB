@@ -47,22 +47,22 @@ class AnonymousFacade(FacadeBase):
         if user.user_role != 1:
             self.logger.logger.error(f'the user.user_role "{user.user_role}" is not 1(Customer).')
             return
+        if not isinstance(customer, Customer):
+            self.logger.logger.error(
+                f'the customer "{customer}" that was sent to the function add_customer is not a Customer instance.')
+            return
+        if self.repo.get_by_condition(Customer,
+                                      lambda query: query.filter(Customer.phone_no == customer.phone_no).all()):
+            self.logger.logger.error(
+                f'the customer.phone_no "{customer.phone_no}" that was sent the function add_customer is already exists in the db.')
+            return
+        if self.repo.get_by_condition(Customer,
+                                      lambda query: query.filter(
+                                          Customer.credit_card_no == customer.credit_card_no).all()):
+            self.logger.logger.error(
+                f'the customer.credit_card_no "{customer.credit_card_no}" that was sent the function add_customer is already exists in the db.')
+            return
         if self.create_user(user):
-            if not isinstance(customer, Customer):
-                self.logger.logger.error(
-                    f'the customer "{customer}" that was sent to the function add_customer is not a Customer instance.')
-                return
-            if self.repo.get_by_condition(Customer,
-                                          lambda query: query.filter(Customer.phone_no == customer.phone_no).all()):
-                self.logger.logger.error(
-                    f'the customer.phone_no "{customer.phone_no}" that was sent the function add_customer is already exists in the db.')
-                return
-            if self.repo.get_by_condition(Customer,
-                                          lambda query: query.filter(
-                                              Customer.credit_card_no == customer.credit_card_no).all()):
-                self.logger.logger.error(
-                    f'the customer.credit_card_no "{customer.credit_card_no}" that was sent the function add_customer is already exists in the db.')
-                return
             customer.id = None
             customer.user_id = user.id
             self.logger.logger.debug(f'A Customer "{customer}" connected by the User "{user}" has been added to the db.')

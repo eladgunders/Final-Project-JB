@@ -38,12 +38,12 @@ class AdministratorFacade(FacadeBase):
                 f'The login token "{self.login_token}" tried to use the function add_administrator but the user.user_role "{user.user_role}" '
                 f'that was sent is not 3(Administrator).')
             return
+        if not isinstance(administrator, Administrator):
+            self.logger.logger.error(
+                f'The login token "{self.login_token}" tried to use the function add_administrator but the administrator "{administrator}" '
+                f'that was sent is not an Administrator object.')
+            return
         if self.create_user(user):
-            if not isinstance(administrator, Administrator):
-                self.logger.logger.error(
-                    f'The login token "{self.login_token}" tried to use the function add_administrator but the administrator "{administrator}" '
-                    f'that was sent is not an Administrator object.')
-                return
             administrator.id = None
             administrator.user_id = user.id
             self.logger.logger.debug(
@@ -158,25 +158,25 @@ class AdministratorFacade(FacadeBase):
                 f'The login token "{self.login_token}" tried to use the function add_customer but the user.user_role "{user.user_role}" '
                 f'that was sent is not 1(Customer).')
             return
+        if not isinstance(customer, Customer):
+            self.logger.logger.error(
+                f'The login token "{self.login_token}" tried to use the function add_customer but customer "{customer}" '
+                f'that was sent is not a Customer object.')
+            return
+        if self.repo.get_by_condition(Customer,
+                                      lambda query: query.filter(Customer.phone_no == customer.phone_no).all()):
+            self.logger.logger.error(
+                f'The login token "{self.login_token}" tried to use the function add_customer but customer.phone_no "{customer.phone_no}" '
+                f'that was sent already exists in the db.')
+            return
+        if self.repo.get_by_condition(Customer,
+                                      lambda query: query.filter(
+                                          Customer.credit_card_no == customer.credit_card_no).all()):
+            self.logger.logger.error(
+                f'The login token "{self.login_token}" tried to use the function add_customer but customer.credit_card_no "{customer.credit_card_no}" '
+                f'that was sent already exists in the db.')
+            return
         if self.create_user(user):
-            if not isinstance(customer, Customer):
-                self.logger.logger.error(
-                    f'The login token "{self.login_token}" tried to use the function add_customer but customer "{customer}" '
-                    f'that was sent is not a Customer object.')
-                return
-            if self.repo.get_by_condition(Customer,
-                                          lambda query: query.filter(Customer.phone_no == customer.phone_no).all()):
-                self.logger.logger.error(
-                    f'The login token "{self.login_token}" tried to use the function add_customer but customer.phone_no "{customer.phone_no}" '
-                    f'that was sent already exists in the db.')
-                return
-            if self.repo.get_by_condition(Customer,
-                                          lambda query: query.filter(
-                                              Customer.credit_card_no == customer.credit_card_no).all()):
-                self.logger.logger.error(
-                    f'The login token "{self.login_token}" tried to use the function add_customer but customer.credit_card_no "{customer.credit_card_no}" '
-                    f'that was sent already exists in the db.')
-                return
             customer.id = None
             customer.user_id = user.id
             self.logger.logger.debug(
@@ -206,24 +206,24 @@ class AdministratorFacade(FacadeBase):
                 f'The login token "{self.login_token}" tried to use the function add_airline but the user.user_role "{user.user_role}" '
                 f'that was sent is not 2(Airline).')
             return
-        if self.create_user(user):
-            if not isinstance(airline, Airline_Company):
-                self.logger.logger.error(
-                    f'The login token "{self.login_token}" tried to use the function add_airline but airline "{airline}" '
-                    f'that was sent is not an Airline Company object.')
-                return
-            if self.repo.get_by_condition(Airline_Company,
-                                          lambda query: query.filter(Airline_Company.name == airline.name).all()):
-                self.logger.logger.error(
-                    f'The login token "{self.login_token}" tried to use the function add_airline but airline.name "{airline.name}" '
-                    f'that was sent already exists in the db.')
-                return
-            if not self.repo.get_by_condition(Country,
+        if not isinstance(airline, Airline_Company):
+            self.logger.logger.error(
+                f'The login token "{self.login_token}" tried to use the function add_airline but airline "{airline}" '
+                f'that was sent is not an Airline Company object.')
+            return
+        if self.repo.get_by_condition(Airline_Company,
+                                      lambda query: query.filter(Airline_Company.name == airline.name).all()):
+            self.logger.logger.error(
+                f'The login token "{self.login_token}" tried to use the function add_airline but airline.name "{airline.name}" '
+                f'that was sent already exists in the db.')
+            return
+        if not self.repo.get_by_condition(Country,
                                           lambda query: query.filter(Country.id == airline.country_id).all()):
-                self.logger.logger.error(
-                    f'The login token "{self.login_token}" tried to use the function add_airline but airline.country_id "{airline.country_id}" '
-                    f'that was sent does not exist in the db.')
-                return
+            self.logger.logger.error(
+                f'The login token "{self.login_token}" tried to use the function add_airline but airline.country_id "{airline.country_id}" '
+                f'that was sent does not exist in the db.')
+            return
+        if self.create_user(user):
             airline.id = None
             airline.user_id = user.id
             self.logger.logger.debug(
