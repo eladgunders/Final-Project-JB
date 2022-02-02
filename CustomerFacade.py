@@ -39,7 +39,7 @@ class CustomerFacade(FacadeBase):
                 f'The login token "{self.login_token}" used the function update_customer but the credit card number "{customer.credit_card_no}" '
                 f'already exists in the db.')
             return
-        self.logger.logger.error(
+        self.logger.logger.debug(
             f'The login token "{self.login_token}" used the function update_customer and updated to "{customer}"')
         self.repo.update_by_id(Customer, Customer.id, self.login_token.id, {Customer.first_name: customer.first_name, Customer.last_name: customer.last_name,
                                                                     Customer.address: customer.address, Customer.phone_no: customer.phone_no,
@@ -75,7 +75,7 @@ class CustomerFacade(FacadeBase):
                                {Flight.remaining_tickets: flight[0].remaining_tickets - 1})
         ticket.id = None
         ticket.customer_id = self.login_token.id
-        self.logger.logger.error(
+        self.logger.logger.debug(
             f'The login token "{self.login_token}" used the function add_ticket and added this ticket "{ticket}"')
         self.repo.add(ticket)
         return True
@@ -97,9 +97,14 @@ class CustomerFacade(FacadeBase):
                 f'The login token "{self.login_token}" tried to use the function remove_ticket but the ticket "{ticket}" '
                 f'that was sent not exist in the db.')
             return
+        if ticket_[0].customer_id != self.login_token.id:
+            self.logger.logger.error(
+                f'The login token "{self.login_token}" tried to use the function remove_ticket but the ticket.customer_id "{ticket.customer_id}" '
+                f'is not belong to the login_token.')
+            return
         self.repo.update_by_id(Flight, Flight.id, ticket_[0].flight.id,
                                {Flight.remaining_tickets: ticket_[0].flight.remaining_tickets + 1})
-        self.logger.logger.error(
+        self.logger.logger.debug(
             f'The login token "{self.login_token}" used the function remove_ticket and removed the ticket "{ticket}"')
         self.repo.delete_by_id(Ticket, Ticket.id, ticket_[0].id)
         return True
