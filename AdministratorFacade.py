@@ -11,8 +11,8 @@ from Country import Country
 class AdministratorFacade(FacadeBase):
 
     def __init__(self, login_token):
-        self.login_token = login_token
         super().__init__()
+        self.login_token = login_token
 
     def get_all_customers(self):
         if self.login_token.role != 'Administrator':

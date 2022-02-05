@@ -9,8 +9,8 @@ from NotLegalFlightTimesError import NotLegalFlightTimesError
 class AirlineFacade(FacadeBase):
 
     def __init__(self, login_token):
-        self.login_token = login_token
         super().__init__()
+        self.login_token = login_token
 
     def get_airline_flights(self):  # returns all the flight for the login token airline
         if self.login_token.role != 'Airline_Company':

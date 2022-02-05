@@ -8,8 +8,8 @@ from NoRemainingTicketsError import NoRemainingTicketsError
 class CustomerFacade(FacadeBase):
 
     def __init__(self, login_token):
-        self.login_token = login_token
         super().__init__()
+        self.login_token = login_token
 
     def update_customer(self, customer):
         if self.login_token.role != 'Customer':
