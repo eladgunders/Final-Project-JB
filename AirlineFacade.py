@@ -4,13 +4,16 @@ from Airline_Company import Airline_Company
 from Country import Country
 from datetime import datetime, timedelta
 from NotLegalFlightTimesError import NotLegalFlightTimesError
+from DbRepoPool import DbRepoPool
 
 
 class AirlineFacade(FacadeBase):
 
     def __init__(self, login_token):
-        super().__init__()
-        self.login_token = login_token
+        self.repool = DbRepoPool.get_instance()
+        self.repo = self.repool.get_connection()
+        super().__init__(self.repo)
+        self._login_token = login_token
 
     def get_airline_flights(self):  # returns all the flight for the login token airline
         if self.login_token.role != 'Airline_Company':

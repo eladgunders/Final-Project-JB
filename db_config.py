@@ -3,7 +3,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from configparser import ConfigParser
 from Logger import Logger
 from sqlalchemy.exc import OperationalError
-import logging
+
 
 config = ConfigParser()
 config.read("config.conf")
@@ -16,6 +16,7 @@ Base = declarative_base()
 Session = sessionmaker()
 engine = create_engine(connection_string, echo=True)  # echo makes the console print all the sql statements being run
 local_session = Session(bind=engine)
+
 
 # creates a table to all classes that inherits from Base
 def create_all_entities():

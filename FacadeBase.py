@@ -15,10 +15,14 @@ from LoginToken import LoginToken
 class FacadeBase(ABC):
 
     @abstractmethod
-    def __init__(self):
+    def __init__(self, repo, login_token=LoginToken(id_=None, name='Anonymous', role='Anonymous')):
         self.logger = Logger.get_instance()
-        self.repo = DbRepo(local_session)
-        self.login_token = LoginToken(id_=None, name='Anonymous', role='Anonymous')
+        self.repo = repo
+        self._login_token = login_token
+
+    @property
+    def login_token(self):
+        return self._login_token
 
     def get_all_flights(self):
         return self.repo.get_all(Flight)

@@ -6,6 +6,7 @@ from User import User
 from Customer import Customer
 from LoginToken import LoginToken
 from UserRoleTableError import UserRoleTableError
+from DbRepoPool import DbRepoPool
 
 
 class AnonymousFacade(FacadeBase):
@@ -14,7 +15,9 @@ class AnonymousFacade(FacadeBase):
                   3: lambda login_token: AdministratorFacade(login_token)}
 
     def __init__(self):
-        super().__init__()
+        self.repool = DbRepoPool.get_instance()
+        self.repo = self.repool.get_connection()
+        super().__init__(self.repo)
 
     def login(self, username, pw):
         user = self.repo.get_by_condition(User, lambda query: query.filter(User.username == username, User.password == pw).all())
@@ -24,18 +27,18 @@ class AnonymousFacade(FacadeBase):
             return
         else:
             if user[0].user_role == 1:
-                token_dic = {1: {'id': user[0].customers.id, 'name': user[0].customers.first_name, 'role': 'Customer'}}
+                token_dic = {'id': user[0].customers.id, 'name': user[0].customers.first_name, 'role': 'Customer'}
             elif user[0].user_role == 2:
-                token_dic = {2: {'id': user[0].airline_companies.id, 'name': user[0].airline_companies.name, 'role': 'Airline_Company'}}
+                token_dic = {'id': user[0].airline_companies.id, 'name': user[0].airline_companies.name, 'role': 'Airline_Company'}
             elif user[0].user_role == 3:
-                token_dic = {3: {'id': user[0].administrators.id, 'name': user[0].administrators.first_name, 'role': 'Administrator'}}
+                token_dic = {'id': user[0].administrators.id, 'name': user[0].administrators.first_name, 'role': 'Administrator'}
             else:
                 self.logger.logger.error(
                     f'User Roles table contains more than 3 user roles. Please check it ASAP.')
                 raise UserRoleTableError
 
-            login_token = LoginToken(token_dic[user[0].user_role]['id'], token_dic[user[0].user_role]['name'],
-                                     token_dic[user[0].user_role]['role'])
+            login_token = LoginToken(token_dic['id'], token_dic['name'],
+                                     token_dic['role'])
 
             self.logger.logger.debug(f'{login_token} logged in to the system.')
             return AnonymousFacade.facade_dic[user[0].user_role](login_token)

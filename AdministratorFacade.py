@@ -6,13 +6,16 @@ from Ticket import Ticket
 from Airline_Company import Airline_Company
 from Administrator import Administrator
 from Country import Country
+from DbRepoPool import DbRepoPool
 
 
 class AdministratorFacade(FacadeBase):
 
     def __init__(self, login_token):
-        super().__init__()
-        self.login_token = login_token
+        self.repool = DbRepoPool.get_instance()
+        self.repo = self.repool.get_connection()
+        super().__init__(self.repo)
+        self._login_token = login_token
 
     def get_all_customers(self):
         if self.login_token.role != 'Administrator':

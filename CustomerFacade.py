@@ -3,13 +3,16 @@ from Flight import Flight
 from Customer import Customer
 from Ticket import Ticket
 from NoRemainingTicketsError import NoRemainingTicketsError
+from DbRepoPool import DbRepoPool
 
 
 class CustomerFacade(FacadeBase):
 
     def __init__(self, login_token):
-        super().__init__()
-        self.login_token = login_token
+        self.repool = DbRepoPool.get_instance()
+        self.repo = self.repool.get_connection()
+        super().__init__(self.repo)
+        self._login_token = login_token
 
     def update_customer(self, customer):
         if self.login_token.role != 'Customer':
