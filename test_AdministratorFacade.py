@@ -4,12 +4,15 @@ from User import User
 from Administrator import Administrator
 from Customer import Customer
 from Airline_Company import Airline_Company
+from DbRepoPool import DbRepoPool
 
 
 @pytest.fixture(scope='session')
 def administrator_facade_object():
     print('Setting up same DAO for all tests.')
-    anonfacade = AnonymousFacade()
+    repool = DbRepoPool.get_instance()
+    repo = repool.get_connection()
+    anonfacade = AnonymousFacade(repo)
     return anonfacade.login('Tomer', '123')
 
 

@@ -6,17 +6,15 @@ from User import User
 from Customer import Customer
 from LoginToken import LoginToken
 from UserRoleTableError import UserRoleTableError
-from DbRepoPool import DbRepoPool
 
 
 class AnonymousFacade(FacadeBase):
 
-    facade_dic = {1: lambda login_token: CustomerFacade(login_token), 2: lambda login_token: AirlineFacade(login_token),
-                  3: lambda login_token: AdministratorFacade(login_token)}
+    facade_dic = {1: lambda login_token, repo: CustomerFacade(login_token, repo), 2: lambda login_token, repo: AirlineFacade(login_token, repo),
+                  3: lambda login_token, repo: AdministratorFacade(login_token, repo)}
 
-    def __init__(self):
-        self.repool = DbRepoPool.get_instance()
-        self.repo = self.repool.get_connection()
+    def __init__(self, repo):
+        self.repo = repo
         super().__init__(self.repo)
 
     def login(self, username, pw):
@@ -41,7 +39,7 @@ class AnonymousFacade(FacadeBase):
                                      token_dic['role'])
 
             self.logger.logger.debug(f'{login_token} logged in to the system.')
-            return AnonymousFacade.facade_dic[user[0].user_role](login_token)
+            return AnonymousFacade.facade_dic[user[0].user_role](login_token, self.repo)
 
     def add_customer(self, user, customer):
         if not isinstance(user, User):

@@ -4,12 +4,15 @@ from Flight import Flight
 from datetime import datetime
 from Airline_Company import Airline_Company
 from NotLegalFlightTimesError import NotLegalFlightTimesError
+from DbRepoPool import DbRepoPool
 
 
 @pytest.fixture(scope='session')
 def airline_facade_object():
     print('Setting up same DAO for all tests.')
-    anonfacade = AnonymousFacade()
+    repool = DbRepoPool.get_instance()
+    repo = repool.get_connection()
+    anonfacade = AnonymousFacade(repo)
     return anonfacade.login('Yoni', '123')
 
 

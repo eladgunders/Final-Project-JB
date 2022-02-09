@@ -3,14 +3,12 @@ from Flight import Flight
 from Customer import Customer
 from Ticket import Ticket
 from NoRemainingTicketsError import NoRemainingTicketsError
-from DbRepoPool import DbRepoPool
 
 
 class CustomerFacade(FacadeBase):
 
-    def __init__(self, login_token):
-        self.repool = DbRepoPool.get_instance()
-        self.repo = self.repool.get_connection()
+    def __init__(self, login_token, repo):
+        self.repo = repo
         super().__init__(self.repo)
         self._login_token = login_token
 

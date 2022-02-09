@@ -5,12 +5,15 @@ from Country import Country
 from Airline_Company import Airline_Company
 from datetime import datetime
 from User import User
+from DbRepoPool import DbRepoPool
 
 
 @pytest.fixture(scope='session')
 def dao_connection_singleton():
     print('Setting up same DAO for all tests.')
-    return AnonymousFacade()
+    repool = DbRepoPool.get_instance()
+    repo = repool.get_connection()
+    return AnonymousFacade(repo)
 
 
 @pytest.fixture(autouse=True)

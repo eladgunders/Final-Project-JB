@@ -3,12 +3,15 @@ from Customer import Customer
 from Ticket import Ticket
 from AnonymousFacade import AnonymousFacade
 from NoRemainingTicketsError import NoRemainingTicketsError
+from DbRepoPool import DbRepoPool
 
 
 @pytest.fixture(scope='session')
 def customer_facade_object():
     print('Setting up same DAO for all tests.')
-    anonfacade = AnonymousFacade()
+    repool = DbRepoPool.get_instance()
+    repo = repool.get_connection()
+    anonfacade = AnonymousFacade(repo)
     return anonfacade.login('Uri', '123')
 
 

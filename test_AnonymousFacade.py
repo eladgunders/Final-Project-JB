@@ -5,12 +5,15 @@ from AirlineFacade import AirlineFacade
 from AdministratorFacade import AdministratorFacade
 from UserRoleTableError import UserRoleTableError
 from User import User
+from DbRepoPool import DbRepoPool
 
 
 @pytest.fixture(scope='session')
 def anonymous_facade_object():
     print('Setting up same DAO for all tests.')
-    return AnonymousFacade()
+    repool = DbRepoPool.get_instance()
+    repo = repool.get_connection()
+    return AnonymousFacade(repo)
 
 
 @pytest.fixture(autouse=True)
