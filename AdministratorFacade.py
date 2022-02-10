@@ -16,7 +16,7 @@ class AdministratorFacade(FacadeBase):
         self._login_token = login_token
 
     def get_all_customers(self):
-        if self.login_token.role != 'Administrator':
+        if self.login_token.role != 'administrators':
             self.logger.logger.error(
                 f'The login token "{self.login_token}" tried to use the function get_all_customers but his role is '
                 f'not Administrator.')
@@ -24,7 +24,7 @@ class AdministratorFacade(FacadeBase):
         return self.repo.get_all(Customer)
 
     def add_administrator(self, user, administrator):
-        if self.login_token.role != 'Administrator':
+        if self.login_token.role != 'administrators':
             self.logger.logger.error(
                 f'The login token "{self.login_token}" tried to use the function add_administrator but his role is '
                 f'not Administrator.')
@@ -59,7 +59,7 @@ class AdministratorFacade(FacadeBase):
             return
 
     def remove_administrator(self, administrator_id):
-        if self.login_token.role != 'Administrator':
+        if self.login_token.role != 'administrators':
             self.logger.logger.error(
                 f'The login token "{self.login_token}" tried to use the function remove_administrator but his role is '
                 f'not Administrator.')
@@ -86,7 +86,7 @@ class AdministratorFacade(FacadeBase):
         return True
 
     def remove_airline(self, airline_id):
-        if self.login_token.role != 'Administrator':
+        if self.login_token.role != 'administrators':
             self.logger.logger.error(
                 f'The login token "{self.login_token}" tried to use the function remove_airline but his role is '
                 f'not Administrator.')
@@ -113,7 +113,7 @@ class AdministratorFacade(FacadeBase):
         return True
 
     def remove_customer(self, customer_id):
-        if self.login_token.role != 'Administrator':
+        if self.login_token.role != 'administrators':
             self.logger.logger.error(
                 f'The login token "{self.login_token}" tried to use the function remove_customer but his role is '
                 f'not Administrator.')
@@ -145,7 +145,7 @@ class AdministratorFacade(FacadeBase):
         return True
 
     def add_customer(self, user, customer):
-        if self.login_token.role != 'Administrator':
+        if self.login_token.role != 'administrators':
             self.logger.logger.error(
                 f'The login token "{self.login_token}" tried to use the function add_customer but his role is '
                 f'not Administrator.')
@@ -192,7 +192,7 @@ class AdministratorFacade(FacadeBase):
             return
 
     def add_airline(self, user, airline):
-        if self.login_token.role != 'Administrator':
+        if self.login_token.role != 'administrators':
             self.logger.logger.error(
                 f'The login token "{self.login_token}" tried to use the function add_airline but his role is '
                 f'not Administrator.')

@@ -13,33 +13,35 @@ class AnonymousFacade(FacadeBase):
     facade_dic = {1: lambda login_token, repo: CustomerFacade(login_token, repo), 2: lambda login_token, repo: AirlineFacade(login_token, repo),
                   3: lambda login_token, repo: AdministratorFacade(login_token, repo)}
 
+    user_backref_and_name_column_dic = {1: ['customers', 'first_name'], 2: ['airline_companies', 'name'],
+                                        3: ['administrators', 'first_name']}
+
     def __init__(self, repo):
         self.repo = repo
         super().__init__(self.repo)
 
     def login(self, username, pw):
-        user = self.repo.get_by_condition(User, lambda query: query.filter(User.username == username, User.password == pw).all())
+        user = self.repo.get_by_condition(User, lambda query: query.filter(User.username == username, User.password == pw).first())
         if not user:
             self.logger.logger.info(
                 f'Wrong username {username} or password {pw} has been entered to the login function.')
             return
-        else:
-            if user[0].user_role == 1:
-                token_dic = {'id': user[0].customers.id, 'name': user[0].customers.first_name, 'role': 'Customer'}
-            elif user[0].user_role == 2:
-                token_dic = {'id': user[0].airline_companies.id, 'name': user[0].airline_companies.name, 'role': 'Airline_Company'}
-            elif user[0].user_role == 3:
-                token_dic = {'id': user[0].administrators.id, 'name': user[0].administrators.first_name, 'role': 'Administrator'}
-            else:
-                self.logger.logger.error(
-                    f'User Roles table contains more than 3 user roles. Please check it ASAP.')
-                raise UserRoleTableError
-
+        try:
+            name = eval(f'user.{AnonymousFacade.user_backref_and_name_column_dic[user.user_role][0]}.'
+                        f'{AnonymousFacade.user_backref_and_name_column_dic[user.user_role][1]}')
+            id_ = eval(f'user.{AnonymousFacade.user_backref_and_name_column_dic[user.user_role][0]}.id')
+            token_dic = {'id': id_, 'name': name,
+                         'role': AnonymousFacade.user_backref_and_name_column_dic[user.user_role][0]}
             login_token = LoginToken(token_dic['id'], token_dic['name'],
                                      token_dic['role'])
 
             self.logger.logger.debug(f'{login_token} logged in to the system.')
-            return AnonymousFacade.facade_dic[user[0].user_role](login_token, self.repo)
+            return AnonymousFacade.facade_dic[user.user_role](login_token, self.repo)
+
+        except KeyError:
+            self.logger.logger.error(
+                f'User Roles table contains more than 3 user roles. Please check it ASAP.')
+            raise UserRoleTableError
 
     def add_customer(self, user, customer):
         if not isinstance(user, User):

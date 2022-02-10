@@ -13,7 +13,7 @@ class CustomerFacade(FacadeBase):
         self._login_token = login_token
 
     def update_customer(self, customer):
-        if self.login_token.role != 'Customer':
+        if self.login_token.role != 'customers':
             self.logger.logger.error(
                 f'The login token "{self.login_token}" tried to use the function update_customer but his role is not Customer.')
             return
@@ -48,7 +48,7 @@ class CustomerFacade(FacadeBase):
         return True
 
     def add_ticket(self, ticket):
-        if self.login_token.role != 'Customer':
+        if self.login_token.role != 'customers':
             self.logger.logger.error(
                 f'The login token "{self.login_token}" tried to use the function add_ticket but his role is not Customer.')
             return
@@ -82,7 +82,7 @@ class CustomerFacade(FacadeBase):
         return True
 
     def remove_ticket(self, ticket):
-        if self.login_token.role != 'Customer':
+        if self.login_token.role != 'customers':
             self.logger.logger.error(
                 f'The login token "{self.login_token}" tried to use the function remove_ticket but his role is not Customer.')
             return
@@ -111,7 +111,7 @@ class CustomerFacade(FacadeBase):
         return True
 
     def get_tickets_by_customer(self):
-        if self.login_token.role != 'Customer':
+        if self.login_token.role != 'customers':
             self.logger.logger.error(
                 f'The login token "{self.login_token}" tried to use the function get_tickets_by_customer but his role is not Customer.')
             return

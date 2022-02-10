@@ -14,7 +14,7 @@ class AirlineFacade(FacadeBase):
         self._login_token = login_token
 
     def get_airline_flights(self):  # returns all the flight for the login token airline
-        if self.login_token.role != 'Airline_Company':
+        if self.login_token.role != 'airline_companies':
             self.logger.logger.error(
                 f'The login token "{self.login_token}" tried to use the function get_airline_flights but his role is '
                 f'not Airline Company.')
@@ -22,7 +22,7 @@ class AirlineFacade(FacadeBase):
         return self.repo.get_by_condition(Flight, lambda query: query.filter(Flight.airline_company_id == self.login_token.id).all())
 
     def add_flight(self, flight):
-        if self.login_token.role != 'Airline_Company':
+        if self.login_token.role != 'airline_companies':
             self.logger.logger.error(
                 f'The login token "{self.login_token}" tried to use the function add_flight but his role is not Airline Company.')
             return
@@ -70,7 +70,7 @@ class AirlineFacade(FacadeBase):
         return True
 
     def remove_flight(self, flight_id):
-        if self.login_token.role != 'Airline_Company':
+        if self.login_token.role != 'airline_companies':
             self.logger.logger.error(
                 f'The login token "{self.login_token}" tried to use the function remove_flight but his role is '
                 f'not Airline Company.')
@@ -103,7 +103,7 @@ class AirlineFacade(FacadeBase):
         return True
 
     def update_airline(self, airline):
-        if self.login_token.role != 'Airline_Company':
+        if self.login_token.role != 'airline_companies':
             self.logger.logger.error(
                 f'The login token "{self.login_token}" tried to use the function update_airline but his role is '
                 f'not Airline Company.')
@@ -137,7 +137,7 @@ class AirlineFacade(FacadeBase):
         return True
 
     def update_flight(self, flight):
-        if self.login_token.role != 'Airline_Company':
+        if self.login_token.role != 'airline_companies':
             self.logger.logger.error(
                 f'The login token "{self.login_token}" tried to use the function update_flight but his role is '
                 f'not Airline Company.')
