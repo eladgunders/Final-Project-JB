@@ -30,10 +30,8 @@ class AnonymousFacade(FacadeBase):
             name = eval(f'user.{AnonymousFacade.user_backref_and_name_column_dic[user.user_role][0]}.'
                         f'{AnonymousFacade.user_backref_and_name_column_dic[user.user_role][1]}')
             id_ = eval(f'user.{AnonymousFacade.user_backref_and_name_column_dic[user.user_role][0]}.id')
-            token_dic = {'id': id_, 'name': name,
-                         'role': AnonymousFacade.user_backref_and_name_column_dic[user.user_role][0]}
-            login_token = LoginToken(token_dic['id'], token_dic['name'],
-                                     token_dic['role'])
+            role = AnonymousFacade.user_backref_and_name_column_dic[user.user_role][0]
+            login_token = LoginToken(id_, name, role)
 
             self.logger.logger.debug(f'{login_token} logged in to the system.')
             return AnonymousFacade.facade_dic[user.user_role](login_token, self.repo)

@@ -9,7 +9,7 @@ from User_Role import User_Role
 from User import User
 from datetime import datetime
 from Logger import Logger
-from sqlalchemy.exc import OperationalError
+from sqlalchemy.exc import OperationalError, IntegrityError
 
 
 class DbRepo:
