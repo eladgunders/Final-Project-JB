@@ -4,6 +4,7 @@ from Airline_Company import Airline_Company
 from Country import Country
 from datetime import datetime, timedelta
 from NotLegalFlightTimesError import NotLegalFlightTimesError
+from NoRemainingTicketsError import NoRemainingTicketsError
 
 
 class AirlineFacade(FacadeBase):
@@ -208,6 +209,7 @@ class AirlineFacade(FacadeBase):
             self.logger.logger.error(
                 f'The login token "{self.login_token}" tried to use the function update_flight but the remaining_tickets'
                 f' "{flight.remaining_tickets}" that was sent must be more or equal than 100.')
+            raise NoRemainingTicketsError
             return
         self.logger.logger.debug(
             f'The login token "{self.login_token}" used the function update_flight and updated the flight "{flight_[0]}" '

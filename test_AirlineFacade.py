@@ -4,6 +4,7 @@ from Flight import Flight
 from datetime import datetime
 from Airline_Company import Airline_Company
 from NotLegalFlightTimesError import NotLegalFlightTimesError
+from NoRemainingTicketsError import NoRemainingTicketsError
 from DbRepoPool import DbRepoPool
 
 
@@ -93,6 +94,13 @@ def test_airline_facade_update_flight_raise_notlegalflighttimeserror(airline_fac
     with pytest.raises(NotLegalFlightTimesError):
         airline_facade_object.update_flight(Flight(id=1, airline_company_id=1, origin_country_id=1, destination_country_id=2,
                                                    departure_time=datetime(2022, 1, 30, 17, 0, 0), landing_time=datetime(2022, 1, 30, 17, 59, 0), remaining_tickets=100))
+
+
+def test_airline_facade_update_flight_raise_noremainingticketserror(airline_facade_object):
+    with pytest.raises(NoRemainingTicketsError):
+        airline_facade_object.update_flight(Flight(id=1, airline_company_id=1, origin_country_id=1, destination_country_id=2,
+                                                   departure_time=datetime(2022, 1, 29, 00, 0, 0),
+                                                   landing_time=datetime(2022, 1, 30, 20, 0, 0), remaining_tickets=-5))
 
 
 @pytest.mark.parametrize('flight_id, expected', [('not_id', None),
