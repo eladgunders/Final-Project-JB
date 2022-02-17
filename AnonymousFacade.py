@@ -6,6 +6,7 @@ from User import User
 from Customer import Customer
 from LoginToken import LoginToken
 from UserRoleTableError import UserRoleTableError
+from WrongLoginDataError import WrongLoginDataError
 
 
 class AnonymousFacade(FacadeBase):
@@ -25,7 +26,7 @@ class AnonymousFacade(FacadeBase):
         if not user:
             self.logger.logger.info(
                 f'Wrong username {username} or password {pw} has been entered to the login function.')
-            return
+            raise WrongLoginDataError
         try:
             name = eval(f'user.{AnonymousFacade.user_backref_and_name_column_dic[user.user_role][0]}.'
                         f'{AnonymousFacade.user_backref_and_name_column_dic[user.user_role][1]}')
@@ -44,25 +45,25 @@ class AnonymousFacade(FacadeBase):
     def add_customer(self, user, customer):
         if not isinstance(user, User):
             self.logger.logger.error(f'the user "{user}" that was sent to the function add_customer is not a User instance.')
-            return
+            raise NotValidDataError
         if user.user_role != 1:
             self.logger.logger.error(f'the user.user_role "{user.user_role}" is not 1(Customer).')
-            return
+            raise NotValidDataError
         if not isinstance(customer, Customer):
             self.logger.logger.error(
                 f'the customer "{customer}" that was sent to the function add_customer is not a Customer instance.')
-            return
+            raise NotValidDataError
         if self.repo.get_by_condition(Customer,
                                       lambda query: query.filter(Customer.phone_no == customer.phone_no).all()):
             self.logger.logger.error(
                 f'the customer.phone_no "{customer.phone_no}" that was sent the function add_customer is already exists in the db.')
-            return
+            raise NotValidDataError
         if self.repo.get_by_condition(Customer,
                                       lambda query: query.filter(
                                           Customer.credit_card_no == customer.credit_card_no).all()):
             self.logger.logger.error(
                 f'the customer.credit_card_no "{customer.credit_card_no}" that was sent the function add_customer is already exists in the db.')
-            return
+            raise NotValidDataError
         if self.create_user(user):
             customer.id = None
             customer.user_id = user.id
@@ -71,4 +72,4 @@ class AnonymousFacade(FacadeBase):
             return True
         else:
             self.logger.logger.error(f'The function add_customer failed - the User "{user} "that was sent is not valid.')
-            return
+            raise NotValidDataError

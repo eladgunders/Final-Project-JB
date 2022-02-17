@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
 from Flight import Flight
-from DbRepo import DbRepo
-from db_config import local_session
+from NotValidDataError import NotValidDataError
 from Airline_Company import Airline_Company
 from Country import Country
 from User import User
@@ -32,12 +31,12 @@ class FacadeBase(ABC):
             self.logger.logger.error(
                 f'The login token "{self.login_token}" used the function get_flights_by_id '
                 f'but the id "{id_}" that was sent is not an integer.')
-            return
+            raise NotValidDataError
         if id_ <= 0:
             self.logger.logger.error(
                 f'The login token "{self.login_token}" used the function get_flights_by_id but the id "{id_}" that was '
                 f'sent is not positive.')
-            return
+            raise NotValidDataError
         return self.repo.get_by_condition(Flight, lambda query: query.filter(Flight.id == id_).all())
 
     def get_flights_by_airline_id(self, airline_id):
@@ -45,18 +44,18 @@ class FacadeBase(ABC):
             self.logger.logger.error(
                 f'The login token "{self.login_token}" used the function get_flights_by_airline_id but the airline_id '
                 f'"{airline_id}" that was sent is not an integer.')
-            return
+            raise NotValidDataError
         if airline_id <= 0:
             self.logger.logger.error(
                 f'The login token "{self.login_token}" used the function get_flights_by_airline_id but the airline_id '
                 f'"{airline_id}" that was sent is not positive.')
-            return
+            raise NotValidDataError
         air_line_ = self.repo.get_by_condition(Airline_Company, lambda query: query.filter(Airline_Company.id == airline_id).all())
         if not air_line_:
             self.logger.logger.error(
                 f'The login token "{self.login_token}" used the function get_flights_by_airline_id but the airline_id '
                 f'"{airline_id}" that was sent is not exists in the db.')
-            return
+            raise NotValidDataError
         return self.repo.get_by_condition(Flight, lambda query: query.filter(Flight.airline_company_id == airline_id).all())
 
     def get_flights_by_parameters(self, origin_country_id, destination_country_id, date):
@@ -65,18 +64,18 @@ class FacadeBase(ABC):
                 f'The login token "{self.login_token}" used the function get_flights_by_parameters but the county ids '
                 f'"{origin_country_id}" and "{destination_country_id}" '
                 f'that was sent must be integers')
-            return
+            raise NotValidDataError
         if origin_country_id <= 0 or destination_country_id <= 0:
             self.logger.logger.error(
                 f'The login token "{self.login_token}" used the function get_flights_by_parameters but the county ids '
                 f'"{origin_country_id}" and "{destination_country_id}" '
                 f'that was sent must be positive')
-            return
+            raise NotValidDataError
         if not isinstance(date, datetime):
             self.logger.logger.error(
                 f'The login token "{self.login_token}" used the function get_flights_by_parameters but the the date '
                 f'"{date}" that was sent must be a Datetime object')
-            return
+            raise NotValidDataError
         return self.repo.get_by_condition(Flight,
                                           lambda query: query.filter(Flight.origin_country_id == origin_country_id,
                                                                      Flight.destination_country_id == destination_country_id,
@@ -92,12 +91,12 @@ class FacadeBase(ABC):
             self.logger.logger.error(
                 f'The login token "{self.login_token}" used the function get_airline_by_id but the id "{id_}" '
                 f'that was sent is not an integer.')
-            return
+            raise NotValidDataError
         if id_ <= 0:
             self.logger.logger.error(
                 f'The login token "{self.login_token}" used the function get_airline_by_id but the id "{id_}" '
                 f'that was sent is not positive.')
-            return
+            raise NotValidDataError
         return self.repo.get_by_condition(Airline_Company, lambda query: query.filter(Airline_Company.id == id_).all())
 
     def create_user(self, user):
@@ -105,22 +104,22 @@ class FacadeBase(ABC):
             self.logger.logger.error(
                 f'The login token "{self.login_token}" used the function create_user but the user "{user}" '
                 f'that was sent must be instance if the class User.')
-            return
+            raise NotValidDataError
         if self.repo.get_by_condition(User, lambda query: query.filter(User.username == user.username).all()):
             self.logger.logger.error(
                 f'The login token "{self.login_token}" used the function create_user but the user.username '
                 f'"{user.username}" that was sent already exists in the db.')
-            return
+            raise NotValidDataError
         if self.repo.get_by_condition(User, lambda query: query.filter(User.email == user.email).all()):
             self.logger.logger.error(
                 f'The login token "{self.login_token}" used the function create_user but the user.email "{user.email}" '
                 f'that was sent already exists in the db.')
-            return
+            raise NotValidDataError
         if not self.repo.get_by_condition(User_Role, lambda query: query.filter(User_Role.id == user.user_role).all()):
             self.logger.logger.error(
                 f'The login token "{self.login_token}" used the function create_user but the user.user_role '
                 f'"{user.user_role}" that was sent does not exist in the db.')
-            return
+            raise NotValidDataError
         user.id = None
         self.logger.logger.debug(f'The login token "{self.login_token}" used the function create_user and new user '
                                  f'"{user}" has ben added to the db.')
@@ -135,11 +134,11 @@ class FacadeBase(ABC):
             self.logger.logger.error(
                 f'The login token "{self.login_token}" used the function get_country_by_id but the id "{id_}" that was '
                 f'sent is not an integer.')
-            return
+            raise NotValidDataError
         if id_ <= 0:
             self.logger.logger.error(
                 f'The login token "{self.login_token}" used the function get_country_by_id but the id "{id_}" that was '
                 f'sent is not positive.')
-            return
+            raise NotValidDataError
         return self.repo.get_by_condition(Country, lambda query: query.filter(Country.id == id_).all())
 
