@@ -3,6 +3,7 @@ from Customer import Customer
 from Ticket import Ticket
 from AnonymousFacade import AnonymousFacade
 from NoRemainingTicketsError import NoRemainingTicketsError
+from NotValidDataError import NotValidDataError
 from DbRepoPool import DbRepoPool
 
 
@@ -21,11 +22,7 @@ def reset_db(customer_facade_object):
     return
 
 
-@pytest.mark.parametrize('customer, expected', [('not customer', None),
-                                                (Customer(first_name='Elad', last_name='Gunders', address='Sokolov 11',
-                          phone_no='0545557007', credit_card_no='0022', user_id=2), None),
-                                                (Customer(first_name='Elad', last_name='Gunders', address='Sokolov 11',
-                          phone_no='0545557000', credit_card_no='0000', user_id=2), None),
+@pytest.mark.parametrize('customer, expected', [
                                                 (Customer(first_name='Ela', last_name='Gun', address='Sokolov 1',
                           phone_no='0545557000', credit_card_no='9999', user_id=2), True)])
 def test_customer_facade_update_customer(customer_facade_object, customer, expected):
@@ -33,12 +30,26 @@ def test_customer_facade_update_customer(customer_facade_object, customer, expec
     assert actual == expected
 
 
-@pytest.mark.parametrize('ticket, expected', [('not ticket', None),
-                                              (Ticket(flight_id=3), None),
-                                              (Ticket(flight_id=2), True)])
+@pytest.mark.parametrize('customer', ['not customer',
+                                                (Customer(first_name='Elad', last_name='Gunders', address='Sokolov 11',
+                          phone_no='0545557007', credit_card_no='0022', user_id=2)),
+                                                (Customer(first_name='Elad', last_name='Gunders', address='Sokolov 11',
+                          phone_no='0545557000', credit_card_no='0000', user_id=2))])
+def test_customer_facade_update_customer_raise_notvaliddataerror(customer_facade_object, customer):
+    with pytest.raises(NotValidDataError):
+        customer_facade_object.update_customer(customer)
+
+
+@pytest.mark.parametrize('ticket, expected', [(Ticket(flight_id=2, customer_id=2), True)])
 def test_customer_facade_remove_ticket(customer_facade_object, ticket, expected):
     actual = customer_facade_object.remove_ticket(ticket)
     assert actual == expected
+
+
+@pytest.mark.parametrize('ticket', ['not ticket', Ticket(flight_id=3, customer_id=3), Ticket(flight_id=1, customer_id=1)])
+def test_customer_facade_remove_ticket_raise_notvaliddataerror(customer_facade_object, ticket):
+    with pytest.raises(NotValidDataError):
+        customer_facade_object.remove_ticket(ticket)
 
 
 def test_customer_facade_get_tickets_by_customer(customer_facade_object):
@@ -51,9 +62,13 @@ def test_customer_facade_add_ticket_raise_noremainingticketserror(customer_facad
         customer_facade_object.add_ticket(Ticket(flight_id=2, customer_id=1))
 
 
-@pytest.mark.parametrize('ticket, expected', [('not ticket', None),
-                                              (Ticket(flight_id=4), None),
-                                              (Ticket(flight_id=1), True)])
+@pytest.mark.parametrize('ticket, expected', [(Ticket(flight_id=1), True)])
 def test_customer_facade_add_ticket(customer_facade_object, ticket, expected):
     actual = customer_facade_object.add_ticket(ticket)
     assert actual == expected
+
+
+@pytest.mark.parametrize('ticket', ['not ticket', Ticket(flight_id=4)])
+def test_customer_facade_add_ticket_raise_notvaliddataerror(customer_facade_object, ticket):
+    with pytest.raises(NotValidDataError):
+        customer_facade_object.add_ticket(ticket)

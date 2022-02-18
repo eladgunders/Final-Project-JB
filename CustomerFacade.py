@@ -104,7 +104,7 @@ class CustomerFacade(FacadeBase):
             self.logger.logger.error(
                 f'The login token "{self.login_token}" tried to use the function remove_ticket but the ticket.customer_id "{ticket.customer_id}" '
                 f'is not belong to the login_token.')
-            raise NotValidDataError
+            raise WrongLoginTokenError
         self.repo.update_by_id(Flight, Flight.id, ticket_[0].flight.id,
                                {Flight.remaining_tickets: ticket_[0].flight.remaining_tickets + 1})
         self.logger.logger.debug(
