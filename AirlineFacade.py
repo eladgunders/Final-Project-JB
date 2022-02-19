@@ -98,7 +98,7 @@ class AirlineFacade(FacadeBase):
             self.logger.logger.error(
                 f'The login token "{self.login_token}" tried to use the function remove_flight but the flight "{flight}" '
                 f'not belongs to the login token airline company.')
-            raise NotValidDataError
+            raise WrongLoginTokenError
         self.logger.logger.debug(
             f'The login token "{self.login_token}" used the function remove_flight and removed the flight "{flight}" '
             f'from the db.')
@@ -170,7 +170,7 @@ class AirlineFacade(FacadeBase):
             self.logger.logger.error(
                 f'The login token "{self.login_token}" tried to use the function update_flight but the flight with the flight.id "{flight.id}" '
                 f'that was sent does not belong to the login token Airline Company.')
-            raise NotValidDataError
+            raise WrongLoginTokenError
         if not isinstance(flight.origin_country_id, int) or not isinstance(flight.destination_country_id, int):
             self.logger.logger.error(
                 f'The login token "{self.login_token}" tried to use the function update_flight but both origin_country_id "{flight.origin_country_id}" '

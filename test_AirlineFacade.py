@@ -5,6 +5,8 @@ from datetime import datetime
 from Airline_Company import Airline_Company
 from NotLegalFlightTimesError import NotLegalFlightTimesError
 from NoRemainingTicketsError import NoRemainingTicketsError
+from WrongLoginTokenError import WrongLoginTokenError
+from NotValidDataError import NotValidDataError
 from DbRepoPool import DbRepoPool
 
 
@@ -29,24 +31,34 @@ def test_airline_facade_get_airline_flights(airline_facade_object):
                              departure_time=datetime(2022, 1, 30, 16, 0, 0), landing_time=datetime(2022, 1, 30, 20, 0, 0), remaining_tickets=200)]
 
 
-@pytest.mark.parametrize('flight, expected', [('not flight', None),
-                                              (Flight(origin_country_id=3, destination_country_id=2,
-                        departure_time=datetime(2022, 1, 30, 16, 0, 0), landing_time=datetime(2022, 1, 30, 20, 0, 0), remaining_tickets=200), None),
-                                              (Flight(origin_country_id=1, destination_country_id=3,
-                        departure_time=datetime(2022, 1, 30, 16, 0, 0), landing_time=datetime(2022, 1, 30, 20, 0, 0), remaining_tickets=200), None),
-                                              (Flight(origin_country_id=1, destination_country_id=2,
-                        departure_time=1, landing_time=datetime(2022, 1, 30, 20, 0, 0), remaining_tickets=200), None),
-                                              (Flight(origin_country_id=1, destination_country_id=2,
-                        departure_time=datetime(2022, 1, 30, 16, 0, 0), landing_time='not datetime', remaining_tickets=200), None),
-                                              (Flight(origin_country_id=1, destination_country_id=2,
-                        departure_time=datetime(2022, 1, 30, 16, 0, 0), landing_time=datetime(2022, 1, 30, 20, 0, 0), remaining_tickets=100.7), None),
-                                              (Flight(origin_country_id=1, destination_country_id=2,
-                        departure_time=datetime(2022, 1, 30, 16, 0, 0), landing_time=datetime(2022, 1, 30, 20, 0, 0), remaining_tickets=99), None),
+@pytest.mark.parametrize('flight, expected', [
                                               (Flight(origin_country_id=1, destination_country_id=2,
                         departure_time=datetime(2022, 1, 30, 17, 0, 0), landing_time=datetime(2022, 1, 30, 21, 0, 0), remaining_tickets=100), True)])
 def test_airline_facade_add_flight(airline_facade_object, flight, expected):
     actual = airline_facade_object.add_flight(flight)
     assert actual == expected
+
+
+@pytest.mark.parametrize('flight', ['not flight',
+                                    Flight(origin_country_id=3, destination_country_id=2,
+                                           departure_time=datetime(2022, 1, 30, 16, 0, 0),
+                                           landing_time=datetime(2022, 1, 30, 20, 0, 0), remaining_tickets=200),
+                                    Flight(origin_country_id=1, destination_country_id=3,
+                                            departure_time=datetime(2022, 1, 30, 16, 0, 0), landing_time=datetime(2022, 1, 30, 20, 0, 0),
+                                            remaining_tickets=200),
+                                    Flight(origin_country_id=1, destination_country_id=2,
+                                            departure_time=1, landing_time=datetime(2022, 1, 30, 20, 0, 0), remaining_tickets=200),
+                                    Flight(origin_country_id=1, destination_country_id=2,
+                                            departure_time=datetime(2022, 1, 30, 16, 0, 0), landing_time='not datetime', remaining_tickets=200),
+                                    Flight(origin_country_id=1, destination_country_id=2,
+                                            departure_time=datetime(2022, 1, 30, 16, 0, 0), landing_time=datetime(2022, 1, 30, 20, 0, 0),
+                                            remaining_tickets=100.7),
+                                    Flight(origin_country_id=1, destination_country_id=2,
+                                            departure_time=datetime(2022, 1, 30, 16, 0, 0), landing_time=datetime(2022, 1, 30, 20, 0, 0),
+                                            remaining_tickets=99)])
+def test_airline_facade_add_flight_raise_notvaliddataerror(airline_facade_object, flight):
+    with pytest.raises(NotValidDataError):
+        airline_facade_object.add_flight(flight)
 
 
 def test_airline_facade_add_flight_raise_notlegalflighttimeserror(airline_facade_object):
@@ -55,39 +67,66 @@ def test_airline_facade_add_flight_raise_notlegalflighttimeserror(airline_facade
                                                 departure_time=datetime(2022, 1, 30, 17, 0, 0), landing_time=datetime(2022, 1, 30, 17, 59, 0), remaining_tickets=100))
 
 
-@pytest.mark.parametrize('airline, expected', [('not airline', None),
-                                               (Airline_Company(name='Yishay', country_id=1, user_id=3), None),
-                                               (Airline_Company(name='Yoni', country_id=3, user_id=3), None),
-                                               (Airline_Company(name='Yoniiiiii', country_id=2, user_id=3), True)])
+@pytest.mark.parametrize('airline, expected', [(Airline_Company(name='Yoniiiiii', country_id=2, user_id=3), True)])
 def test_airline_facade_update_airline(airline_facade_object, airline, expected):
     actual = airline_facade_object.update_airline(airline)
     assert actual == expected
 
 
-@pytest.mark.parametrize('flight, expected', [('not flight', None),
-                                              (Flight(airline_company_id=3, origin_country_id=1, destination_country_id=2,
-                        departure_time=datetime(2022, 1, 30, 16, 0, 0), landing_time=datetime(2022, 1, 30, 20, 0, 0), remaining_tickets=200), None),
-                                              (Flight(airline_company_id=1, origin_country_id=3, destination_country_id=2,
-                        departure_time=datetime(2022, 1, 30, 16, 0, 0), landing_time=datetime(2022, 1, 30, 20, 0, 0), remaining_tickets=200), None),
-                                              (Flight(airline_company_id=1, origin_country_id=1, destination_country_id=3,
-                        departure_time=datetime(2022, 1, 30, 16, 0, 0), landing_time=datetime(2022, 1, 30, 20, 0, 0), remaining_tickets=200), None),
-                                              (Flight(airline_company_id=1, origin_country_id=1, destination_country_id=2,
-                        departure_time=1, landing_time=datetime(2022, 1, 30, 20, 0, 0), remaining_tickets=200), None),
-                                              (Flight(airline_company_id=1, origin_country_id=1, destination_country_id=2,
-                        departure_time=datetime(2022, 1, 30, 16, 0, 0), landing_time='not datetime', remaining_tickets=200), None),
-                                              (Flight(airline_company_id=1, origin_country_id=1, destination_country_id=2,
-                        departure_time=datetime(2022, 1, 30, 16, 0, 0), landing_time=datetime(2022, 1, 30, 20, 0, 0), remaining_tickets=100.7), None),
-                                              (Flight(airline_company_id=1, origin_country_id=1, destination_country_id=2,
-                        departure_time=datetime(2022, 1, 30, 16, 0, 0), landing_time=datetime(2022, 1, 30, 20, 0, 0), remaining_tickets=-2), None),
-                                              (Flight(id=3, airline_company_id=1, origin_country_id=2, destination_country_id=1,
-                        departure_time=datetime(2022, 1, 29, 17, 0, 0), landing_time=datetime(2022, 1, 30, 14, 0, 0), remaining_tickets=0), None),
-                                              (Flight(id=2, airline_company_id=2, origin_country_id=2, destination_country_id=1,
-                        departure_time=datetime(2022, 1, 29, 17, 0, 0), landing_time=datetime(2022, 1, 30, 14, 0, 0), remaining_tickets=0), None),
-                                              (Flight(id=1, airline_company_id=1, origin_country_id=2, destination_country_id=1,
-                        departure_time=datetime(2022, 1, 29, 17, 0, 0), landing_time=datetime(2022, 1, 30, 14, 0, 0), remaining_tickets=0), True)])
+@pytest.mark.parametrize('airline', ['not airline',
+                                     Airline_Company(name='Yishay', country_id=1, user_id=3),
+                                     Airline_Company(name='Yoni', country_id=3, user_id=3)])
+def test_airline_facade_update_airline_raise_notvaliddataerror(airline_facade_object, airline):
+    with pytest.raises(NotValidDataError):
+        airline_facade_object.update_airline(airline)
+
+
+@pytest.mark.parametrize('flight, expected', [(Flight(id=1, airline_company_id=1, origin_country_id=2,
+                                                      destination_country_id=1,
+                                                      departure_time=datetime(2022, 1, 29, 17, 0, 0),
+                                                      landing_time=datetime(2022, 1, 30, 14, 0, 0),
+                                                      remaining_tickets=0), True)])
 def test_airline_facade_update_flight(airline_facade_object, flight, expected):
     actual = airline_facade_object.update_flight(flight)
     assert actual == expected
+
+
+@pytest.mark.parametrize('flight', ['not flight',
+                                    Flight(airline_company_id=3, origin_country_id=1, destination_country_id=2,
+                                           departure_time=datetime(2022, 1, 30, 16, 0, 0),
+                                           landing_time=datetime(2022, 1, 30, 20, 0, 0)),
+                                    Flight(airline_company_id=1, origin_country_id=3, destination_country_id=2,
+                                           departure_time=datetime(2022, 1, 30, 16, 0, 0),
+                                           landing_time=datetime(2022, 1, 30, 20, 0, 0), remaining_tickets=200),
+                                    Flight(airline_company_id=1, origin_country_id=1, destination_country_id=3,
+                                           departure_time=datetime(2022, 1, 30, 16, 0, 0),
+                                           landing_time=datetime(2022, 1, 30, 20, 0, 0)),
+                                    Flight(airline_company_id=1, origin_country_id=1, destination_country_id=2,
+                                           departure_time=1, landing_time=datetime(2022, 1, 30, 20, 0, 0),
+                                           remaining_tickets=200),
+                                    Flight(airline_company_id=1, origin_country_id=1, destination_country_id=2,
+                                           departure_time=datetime(2022, 1, 30, 16, 0, 0), landing_time='not datetime',
+                                           remaining_tickets=200),
+                                    Flight(airline_company_id=1, origin_country_id=1, destination_country_id=2,
+                                           departure_time=datetime(2022, 1, 30, 16, 0, 0),
+                                           landing_time=datetime(2022, 1, 30, 20, 0, 0), remaining_tickets=100.7),
+                                    Flight(airline_company_id=1, origin_country_id=1, destination_country_id=2,
+                                           departure_time=datetime(2022, 1, 30, 16, 0, 0),
+                                           landing_time=datetime(2022, 1, 30, 20, 0, 0)),
+                                    Flight(id=3, airline_company_id=1, origin_country_id=2, destination_country_id=1,
+                                           departure_time=datetime(2022, 1, 29, 17, 0, 0),
+                                           landing_time=datetime(2022, 1, 30, 14, 0, 0), remaining_tickets=0)])
+def test_airline_facade_update_flight_raise_notvaliddataerror(airline_facade_object, flight):
+    with pytest.raises(NotValidDataError):
+        airline_facade_object.update_flight(flight)
+
+
+def test_airline_facade_update_flight_raise_wrongloginlokenerror(airline_facade_object):
+    with pytest.raises(WrongLoginTokenError):
+        airline_facade_object.update_flight(Flight(id=2, airline_company_id=2, origin_country_id=2,
+                                                   destination_country_id=1,
+                                                   departure_time=datetime(2022, 1, 29, 17, 0, 0),
+                                                   landing_time=datetime(2022, 1, 30, 14, 0, 0), remaining_tickets=0))
 
 
 def test_airline_facade_update_flight_raise_notlegalflighttimeserror(airline_facade_object):
@@ -103,11 +142,18 @@ def test_airline_facade_update_flight_raise_noremainingticketserror(airline_faca
                                                    landing_time=datetime(2022, 1, 30, 20, 0, 0), remaining_tickets=-5))
 
 
-@pytest.mark.parametrize('flight_id, expected', [('not_id', None),
-                                                 (0, None),
-                                                 (4, None),
-                                                 (2, None),
-                                                 (1, True)])
+@pytest.mark.parametrize('flight_id, expected', [(1, True)])
 def test_airline_facade_remove_flight(airline_facade_object, flight_id, expected):
     actual = airline_facade_object.remove_flight(flight_id)
     assert actual == expected
+
+
+@pytest.mark.parametrize('flight_id', ['not_id', 0, 4])
+def test_airline_facade_remove_flight_raise_notvaliddataerror(airline_facade_object, flight_id):
+    with pytest.raises(NotValidDataError):
+        airline_facade_object.remove_flight(flight_id)
+
+
+def test_airline_facade_remove_flight_raise_wronglogintokenerror(airline_facade_object):
+    with pytest.raises(WrongLoginTokenError):
+        airline_facade_object.remove_flight(2)
