@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 from configparser import ConfigParser
-from Logger import Logger
+from logger.Logger import Logger
 from sqlalchemy.exc import OperationalError
 
 
