@@ -1,4 +1,4 @@
-from FacadeBase import FacadeBase
+from facades.FacadeBase import FacadeBase
 from tables.Customer import Customer
 from tables.User import User
 from tables.Flight import Flight

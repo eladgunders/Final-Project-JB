@@ -1,4 +1,4 @@
-from DbRepo import DbRepo
+from data_access_objects.DbRepo import DbRepo
 from db_config import local_session
 import threading
 import time
