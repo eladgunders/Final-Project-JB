@@ -234,6 +234,20 @@ class DbRepo:
         except OperationalError as e:
             self.logger.logger.critical(e)
 
+    def reset_all_tables_auto_inc(self):
+        try:
+            # resetting auto increment for all tables
+            self.reset_auto_inc(Country)
+            self.reset_auto_inc(User_Role)
+            self.reset_auto_inc(User)
+            self.reset_auto_inc(Administrator)
+            self.reset_auto_inc(Airline_Company)
+            self.reset_auto_inc(Customer)
+            self.reset_auto_inc(Flight)
+            self.reset_auto_inc(Ticket)
+        except OperationalError as e:
+            self.logger.logger.critical(e)
+
     def reset_test_db(self):
         try:
             # resetting auto increment for all tables
