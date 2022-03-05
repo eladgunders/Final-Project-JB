@@ -2,15 +2,18 @@ from tables.Customer import Customer
 from tables.Country import Country
 from tables.User import User
 from tables.User_Role import User_Role
+from tables.Flight import Flight
 from tables.Ticket import Ticket
 from tables.Administrator import Administrator
 from tables.Airline_Company import Airline_Company
 from data_access_objects.DbRepoPool import DbRepoPool
 from logger.Logger import Logger
+from datetime import timedelta
 import random
 import httpx
 import json
 import trio
+from faker import Faker
 
 
 class DbDataGen:
@@ -18,13 +21,16 @@ class DbDataGen:
     customer_role = 1
     airline_role = 2
     admin_role = 3
-    number_of_countries_in_db = 244
+    number_of_countries_in_db = None
+    max_hours_delta_t = 15
+    remaining_tickets_per_flight = 200
 
     def __init__(self, url):
         self.url = url
         self.repool = DbRepoPool.get_instance()
         self.repo = self.repool.get_connection()
         self.logger = Logger.get_instance()
+        self.fake = Faker()
 
     @staticmethod
     def generate_credit_card_num():
@@ -45,6 +51,7 @@ class DbDataGen:
         for country in countries:
             countries_ls.append(Country(name=country['name']))
         self.repo.add_all(countries_ls)
+        self.number_of_countries_in_db = len(countries_ls)
 
     def generate_user_roles(self):
         self.repo.add(User_Role(role_name='Customer'))
@@ -91,17 +98,24 @@ class DbDataGen:
             self.repo.add(new_airline)
 
     def generate_flights_per_company(self, num):
-        pass
+        airlines = self.repo.get_all(Airline_Company)
+        for a in airlines:
+            for i in range(num):
+                airline_company_id = a.id
+                origin_country_id = random.randint(1, self.number_of_countries_in_db)
+                destination_country_id = random.randint(1, self.number_of_countries_in_db)
+                departure_time = self.fake.date_time_between(start_date='now', end_date='+2y')
+                landing_time = departure_time + timedelta(hours=random.randint(2, self.max_hours_delta_t))  # min delta t is 2 hours
+                remaining_tickets = self.remaining_tickets_per_flight
+                self.repo.add(Flight(airline_company_id=airline_company_id, origin_country_id=origin_country_id,
+                                     destination_country_id=destination_country_id, departure_time=departure_time,
+                                     landing_time=landing_time, remaining_tickets=remaining_tickets))
 
     def generate_tickets_per_customer(self, num):
-        pass
-
-x = DbDataGen('https://randomuser.me/api/?nat=us')
-# dry data - will always generate
-x.generate_countries()
-x.generate_user_roles()
-x.generate_admin()
-# raw data
-x.generate_airline_companies(10)
-x.generate_customers(20)
-
+        customers = self.repo.get_all(Customer)
+        flights = self.repo.get_all(Flight)
+        for c in customers:
+            shuffled_flights = random.sample(flights, len(flights))
+            flights_for_tickets = shuffled_flights[0:num]
+            for f in flights_for_tickets:
+                self.repo.add(Ticket(flight_id=f.id, customer_id=c.id))
