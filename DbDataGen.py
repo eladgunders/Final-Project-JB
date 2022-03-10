@@ -30,7 +30,7 @@ class DbDataGen(BaseDbDataGen):
         self.fake = Faker()
 
     @staticmethod
-    def generate_credit_card_num():
+    def generate_credit_card_num():  # ccn - credit card number
         ccn = str(random.randint(0, 9))
         for i in range(11):
             ccn = ccn + str(random.randint(0, 9))
