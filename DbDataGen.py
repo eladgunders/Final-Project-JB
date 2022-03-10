@@ -6,17 +6,16 @@ from tables.Flight import Flight
 from tables.Ticket import Ticket
 from tables.Administrator import Administrator
 from tables.Airline_Company import Airline_Company
-from data_access_objects.DbRepoPool import DbRepoPool
-from logger.Logger import Logger
 from datetime import timedelta
 import random
 import httpx
 import json
 import trio
 from faker import Faker
+from BaseDbDataGen import BaseDbDataGen
 
 
-class DbDataGen:
+class DbDataGen(BaseDbDataGen):
 
     customer_role = 1
     airline_role = 2
@@ -25,11 +24,9 @@ class DbDataGen:
     max_hours_delta_t = 15
     remaining_tickets_per_flight = 200
 
-    def __init__(self, url):
-        self.url = url
-        self.repool = DbRepoPool.get_instance()
-        self.repo = self.repool.get_connection()
-        self.logger = Logger.get_instance()
+    def __init__(self):
+        super().__init__()
+        self.url = 'https://randomuser.me/api/?nat=us'
         self.fake = Faker()
 
     @staticmethod
@@ -39,6 +36,25 @@ class DbDataGen:
             ccn = ccn + str(random.randint(0, 9))
         return ccn
 
+    @staticmethod
+    def get_user_data(j_son):
+        username = j_son['results'][0]['login']['username']
+        pw = j_son['results'][0]['login']['password']
+        email = j_son['results'][0]['email']
+
+        return username, pw, email
+
+    @staticmethod
+    def get_customer_data(j_son):
+        first_name = j_son['results'][0]['name']['first'],
+        last_name = j_son['results'][0]['name']['last'],
+        address = str(j_son['results'][0]['location']['street']['number']) + " " + \
+                      j_son['results'][0]['location']['street']['name'] + j_son['results'][0]['location']['state'] + \
+                      j_son['results'][0]['location']['country']
+        phone_no = j_son['results'][0]['phone']
+
+        return first_name, last_name, address, phone_no
+
     async def get_data(self):
         async with httpx.AsyncClient() as client:
             r = await client.get(self.url)
@@ -46,7 +62,7 @@ class DbDataGen:
 
     def generate_countries(self):
         countries_ls = []
-        with open(r"db_generator\countries.json") as f:
+        with open(r"countries.json") as f:
             countries = json.load(f)
         for country in countries:
             countries_ls.append(Country(name=country['name']))
@@ -59,9 +75,7 @@ class DbDataGen:
         self.repo.add(User_Role(role_name='Administrator'))
 
     def create_user(self, j_son, user_role):
-        username = j_son['results'][0]['login']['username']
-        pw = j_son['results'][0]['login']['password']
-        email = j_son['results'][0]['email']
+        username, pw, email = self.get_user_data(j_son)
         inserted_user = User(username=username, password=pw, email=email, user_role=user_role)
         self.repo.add(inserted_user)
         return inserted_user
@@ -75,19 +89,17 @@ class DbDataGen:
         for i in range(num):
             data = trio.run(self.get_data)
             user = self.create_user(data, self.customer_role)
-            address = str(data['results'][0]['location']['street']['number']) + " " + \
-                      data['results'][0]['location']['street']['name'] + data['results'][0]['location']['state'] + \
-                      data['results'][0]['location']['country']
-            new_customer = Customer(first_name=data['results'][0]['name']['first'],
-                                    last_name=data['results'][0]['name']['last'],
-                                    address=address, phone_no=data['results'][0]['phone'],
+            first_name, last_name, address, phone_no = self.get_customer_data(data)
+            new_customer = Customer(first_name=first_name,
+                                    last_name=last_name,
+                                    address=address, phone_no=phone_no,
                                     credit_card_no=self.generate_credit_card_num(), user_id=user.id)
             self.repo.add(new_customer)
 
     def generate_airline_companies(self, num):
         if num > 150:  # cant be more than 150 airline_companies
             return
-        with open(r"db_generator\airline_companies.json") as f:
+        with open(r"airline_companies.json") as f:
             airlines = json.load(f)
         for i in range(num):
             data = trio.run(self.get_data)
