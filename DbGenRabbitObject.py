@@ -1,4 +1,6 @@
 import pika
+import json
+from DbDataObject import DbDataObject
 
 
 class DbGenRabbitObject:
@@ -25,7 +27,16 @@ class DbGenRabbitObject:
         self.channel.queue_declare(queue=self.data_to_generate_queue)
 
         def callback(ch, method, properties, body):
-            print(body)
+            data = json.loads(body)
+            airlines = int(data['airlines'])
+            customers = int(data['customers'])
+            flights_per_airline = int(data['flights_per_airline'])
+            tickets_per_customer = int(data['tickets_per_customer'])
+            db_data = DbDataObject(airlines=airlines, customers=customers,
+                                   flights_per_airline=flights_per_airline,
+                                   tickets_per_customer=tickets_per_customer)
+            db_data.generate_data()
+            return
 
         self.channel.basic_consume(queue=self.data_to_generate_queue,
                                    on_message_callback=callback, auto_ack=True)
@@ -35,7 +46,7 @@ class DbGenRabbitObject:
         self.channel.queue_declare(queue=self.generated_data_queue)
 
         def callback(ch, method, properties, body):
-            print(body)
+            print(f'{body} was generated successfully!')
 
         self.channel.basic_consume(queue=self.generated_data_queue,
                                    on_message_callback=callback, auto_ack=True)

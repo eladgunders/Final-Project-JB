@@ -10,7 +10,6 @@ from kivy.properties import ObjectProperty, StringProperty
 from DbDataObject import DbDataObject
 from custom_errors.DbGenDataNotValidError import DbGenDataNotValidError
 from DbGenRabbitObject import DbGenRabbitObject
-import pika
 import json
 from threading import Thread
 
@@ -35,7 +34,7 @@ class DbGenWidget(Widget):
                                           flights_per_airline=flights_per_company,
                                           tickets_per_customer=tickets_per_customer)
             db_data_object.validate_data()
-            self.rabbit.publish_data_to_gen(db_data_object.__str__())
+            self.rabbit.publish_data_to_gen(json.dumps(db_data_object.__dict__()))
             self.ids.alerts_label.text = 'The data was generated successfully!'
 
         except DbGenDataNotValidError:
@@ -60,3 +59,4 @@ Builder.load_file('my1.kv')
 
 if __name__ == "__main__":
     MyApp().run()
+    DbGenWidget.rabbit.consume_to_generated_data()

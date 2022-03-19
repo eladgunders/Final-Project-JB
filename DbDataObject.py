@@ -1,5 +1,6 @@
 from custom_errors.DbGenDataNotValidError import DbGenDataNotValidError
 from DbDataGen import DbDataGen
+# from DbGenRabbitObject import DbGenRabbitObject
 
 
 class DbDataObject:
@@ -10,6 +11,7 @@ class DbDataObject:
         self.flights_per_airline = flights_per_airline
         self.tickets_per_customer = tickets_per_customer
         self.db_gen = DbDataGen()
+        # self.rabbit = DbGenRabbitObject()
 
     def validate_data(self):
         try:
@@ -24,16 +26,27 @@ class DbDataObject:
         except ValueError:
             raise DbGenDataNotValidError
 
-    def generate_data(self, airlines, customers, flights_per_company, tickets_per_customer):
-        self.db_gen.generate_countries()  # send back to rabbit after every task
+    def generate_data(self):
+        self.db_gen.generate_countries()
+        #self.rabbit.publish_generated_data('Countries')
         self.db_gen.generate_user_roles()
+        #self.rabbit.publish_generated_data('User Roles')
         self.db_gen.generate_admin()
-        self.db_gen.generate_airline_companies(airlines)
-        self.db_gen.generate_customers(customers)
-        self.db_gen.generate_flights_per_company(flights_per_company)
-        self.db_gen.generate_tickets_per_customer(tickets_per_customer)
+        #self.rabbit.publish_generated_data('Admins')
+        self.db_gen.generate_airline_companies(self.airlines)
+        #self.rabbit.publish_generated_data('Airlines')
+        self.db_gen.generate_customers(self.customers)
+        #self.rabbit.publish_generated_data('Customers')
+        self.db_gen.generate_flights_per_company(self.flights_per_airline)
+        #self.rabbit.publish_generated_data('Flights')
+        self.db_gen.generate_tickets_per_customer(self.tickets_per_customer)
+        #self.rabbit.publish_generated_data('Tickets')
 
     def __str__(self):
         return f'{{"customers": {self.customers}, "airlines": {self.airlines}, ' \
                f'"flights_per_airline": {self.flights_per_airline},' \
                f' "tickets_per_customer": {self.tickets_per_customer}}}'
+
+    def __dict__(self):
+        return {'customers': self.customers, 'airlines': self.airlines, 'flights_per_airline': self.flights_per_airline,
+                'tickets_per_customer': self.tickets_per_customer}
