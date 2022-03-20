@@ -4,7 +4,6 @@
     customers: customers
     flights_per_company: flights_per_company
     tickets_per_customer: tickets_per_customer
-    my_progress_bar: my_progress_bar
 
     GridLayout:
         cols:1
@@ -66,6 +65,7 @@
 
             ProgressBar:
                 id: my_progress_bar
+                value: 0
                 min: 0
                 max: 100
                 pos_hint: {'x': 0.1}

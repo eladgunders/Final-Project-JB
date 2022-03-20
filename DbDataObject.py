@@ -1,6 +1,7 @@
 from custom_errors.DbGenDataNotValidError import DbGenDataNotValidError
 from DbDataGen import DbDataGen
-# from DbGenRabbitObject import DbGenRabbitObject
+from RabbitProducerObject import RabbitProducerObject
+import json
 
 
 class DbDataObject:
@@ -11,7 +12,7 @@ class DbDataObject:
         self.flights_per_airline = flights_per_airline
         self.tickets_per_customer = tickets_per_customer
         self.db_gen = DbDataGen()
-        # self.rabbit = DbGenRabbitObject()
+        self.rabbit_producer = RabbitProducerObject('GeneratedData')
 
     def validate_data(self):
         try:
@@ -28,19 +29,19 @@ class DbDataObject:
 
     def generate_data(self):
         self.db_gen.generate_countries()
-        #self.rabbit.publish_generated_data('Countries')
+        self.rabbit_producer.publish(json.dumps({'Countries': 10}))
         self.db_gen.generate_user_roles()
-        #self.rabbit.publish_generated_data('User Roles')
+        self.rabbit_producer.publish(json.dumps({'User Roles': 20}))
         self.db_gen.generate_admin()
-        #self.rabbit.publish_generated_data('Admins')
+        self.rabbit_producer.publish(json.dumps({'Admins': 30}))
         self.db_gen.generate_airline_companies(self.airlines)
-        #self.rabbit.publish_generated_data('Airlines')
+        self.rabbit_producer.publish(json.dumps({'Airlines': 50}))
         self.db_gen.generate_customers(self.customers)
-        #self.rabbit.publish_generated_data('Customers')
+        self.rabbit_producer.publish(json.dumps({'Customers': 70}))
         self.db_gen.generate_flights_per_company(self.flights_per_airline)
-        #self.rabbit.publish_generated_data('Flights')
+        self.rabbit_producer.publish(json.dumps({'Flights': 90}))
         self.db_gen.generate_tickets_per_customer(self.tickets_per_customer)
-        #self.rabbit.publish_generated_data('Tickets')
+        self.rabbit_producer.publish(json.dumps({'Tickets': 100}))
 
     def __str__(self):
         return f'{{"customers": {self.customers}, "airlines": {self.airlines}, ' \
