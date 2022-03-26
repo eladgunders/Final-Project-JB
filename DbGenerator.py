@@ -26,63 +26,62 @@ class DbGenWidget(Widget):
     alerts_label = StringProperty('')
     repo = DbRepo(local_session)
     rabbit_producer = RabbitProducerObject('DataToGenerate')
-    is_db_empty = True
+    already_generated = False
 
-    @staticmethod
-    def callback(ch, method, properties, body):
-        data = json.loads(body)
-        print(data)
-        progress_bar_value = list(data.values())[0]
-        print(progress_bar_value)
+    def update_progress_bar(self, value):
+        self.ids.my_progress_bar.value = value
 
     # root.btn() in kv file
     def btn(self):
-        if self.ids.rbutton1.state == 'down':
-            if not self.is_db_empty:
-                self.ids.alerts_label.text = 'DB already has data. Reset the db to replace the data.'
-                return
-            try:
-                airlines = self.airline_companies.text
-                customers = self.customers.text
-                flights_per_company = self.flights_per_company.text
-                tickets_per_customer = self.tickets_per_customer.text
-                db_data_object = DbDataObject(customers=customers, airlines=airlines,
-                                              flights_per_airline=flights_per_company,
-                                              tickets_per_customer=tickets_per_customer)
-                db_data_object.validate_data()
-                self.rabbit_producer.publish(json.dumps(db_data_object.__dict__()))
-                self.is_db_empty = False
+        if self.already_generated:
+            self.ids.alerts_label.text = 'The data was already generated, please close the app.'
+            return
+        try:
+            airlines = self.airline_companies.text
+            customers = self.customers.text
+            flights_per_company = self.flights_per_company.text
+            tickets_per_customer = self.tickets_per_customer.text
+            db_data_object = DbDataObject(customers=customers, airlines=airlines,
+                                          flights_per_airline=flights_per_company,
+                                          tickets_per_customer=tickets_per_customer)
+            db_data_object.validate_data()
+            self.rabbit_producer.publish(json.dumps(db_data_object.__dict__()))
+            self.already_generated = True
+            self.ids.alerts_label.text = 'Generating Data...'
 
-            except DbGenDataNotValidError:
-                self.ids.alerts_label.text = 'Data is not Valid!'
-        else:
-            repo_thread = Thread(target=self.repo.reset_all_tables_auto_inc)
-            repo_thread.start()
-            self.is_db_empty = True
-            self.ids.alerts_label.text = ''
-
-    def switchstate1(self):
-        self.ids.rbutton1.state = 'down'
-        self.ids.rbutton2.state = 'normal'
-
-    def switchstate2(self):
-        self.ids.rbutton2.state = 'down'
-        self.ids.rbutton1.state = 'normal'
-
-    def update_progress_bar(self, num):
-        self.ids.my_progress_bar.value = num
-
-
-class MyApp(App):
-    def build(self):
-        return DbGenWidget()
+        except DbGenDataNotValidError:
+            self.ids.alerts_label.text = 'Data is not Valid!'
 
 
 Builder.load_file('my1.kv')
 
+dbgen = DbGenWidget()
+
+
+def get_db_gen():
+    return dbgen
+
+
+class MyApp(App):
+    def build(self):
+        return get_db_gen()
+
+
+def callback(ch, method, properties, body):
+    data = json.loads(body)
+    progress_bar_value = list(data.values())[0]
+    kivy_app = get_db_gen()
+    kivy_app.ids.alerts_label.text = f'Generating {list(data.keys())[0]}'
+    kivy_app.update_progress_bar(progress_bar_value) # updating the progress bar
+    if progress_bar_value == 100:
+        kivy_app.ids.alerts_label.text = 'The data was successfully generated!'
 
 if __name__ == "__main__":
-    rabbit_consumer = RabbitConsumerObject(q_name='GeneratedData', callback=DbGenWidget.callback)
+
+    repo = DbRepo(local_session)
+    repo_thread = Thread(target=repo.reset_all_tables_auto_inc)
+    repo_thread.start()
+    rabbit_consumer = RabbitConsumerObject(q_name='GeneratedData', callback=callback)
     t1 = Thread(target=rabbit_consumer.consume)
     t1.setDaemon(True)
     t1.start()

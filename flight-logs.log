@@ -1,0 +1,20 @@
+2022-03-23 19:51:42,011:DbRepo:107548:56548:CRITICAL:(psycopg2.errors.DeadlockDetected) deadlock detected
+LINE 1: INSERT INTO countries (name) VALUES ('Afghanistan'),('land I...
+                    ^
+DETAIL:  Process 107728 waits for RowExclusiveLock on relation 225524 of database 28039; blocked by process 43776.
+Process 43776 waits for AccessExclusiveLock on relation 225645 of database 28039; blocked by process 107728.
+HINT:  See server log for query details.
+
+[SQL: INSERT INTO countries (name) VALUES (%(name)s) RETURNING countries.id]
+[parameters: ({'name': 'Afghanistan'}, {'name': 'land Islands'}, {'name': 'Albania'}, {'name': 'Algeria'}, {'name': 'American Samoa'}, {'name': 'AndorrA'}, {'name': 'Angola'}, {'name': 'Anguilla'}  ... displaying 10 of 244 total bound parameter sets ...  {'name': 'Zambia'}, {'name': 'Zimbabwe'})]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2022-03-23 19:53:07,043:DbRepo:101968:96768:CRITICAL:(psycopg2.errors.DeadlockDetected) deadlock detected
+LINE 1: INSERT INTO countries (name) VALUES ('Afghanistan'),('land I...
+                    ^
+DETAIL:  Process 114032 waits for RowExclusiveLock on relation 225524 of database 28039; blocked by process 43776.
+Process 43776 waits for AccessExclusiveLock on relation 225645 of database 28039; blocked by process 114032.
+HINT:  See server log for query details.
+
+[SQL: INSERT INTO countries (name) VALUES (%(name)s) RETURNING countries.id]
+[parameters: ({'name': 'Afghanistan'}, {'name': 'land Islands'}, {'name': 'Albania'}, {'name': 'Algeria'}, {'name': 'American Samoa'}, {'name': 'AndorrA'}, {'name': 'Angola'}, {'name': 'Anguilla'}  ... displaying 10 of 244 total bound parameter sets ...  {'name': 'Zambia'}, {'name': 'Zimbabwe'})]
+(Background on this error at: https://sqlalche.me/e/14/e3q8)

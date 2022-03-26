@@ -10,7 +10,6 @@ class RabbitProducerObject:
         self.channel.queue_declare(queue=self.q_name)
 
     def publish(self, data):
-        self.channel.queue_declare(queue=self.q_name)
         self.channel.basic_publish(exchange='',
                                    routing_key=self.q_name,
                                    body=data)
