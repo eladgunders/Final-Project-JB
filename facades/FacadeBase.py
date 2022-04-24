@@ -26,6 +26,16 @@ class FacadeBase(ABC):
     def get_all_flights(self):
         return self.repo.get_all(Flight)
 
+    def get_arrival_flights_by_delta_t(self, hours_num):
+        if not isinstance(hours_num, int):
+            raise NotValidDataError
+        return self.repo.get_arrival_flights_by_delta_t(hours_num)
+
+    def get_departure_flights_by_delta_t(self, hours_num):
+        if not isinstance(hours_num, int):
+            raise NotValidDataError
+        return self.repo.get_departure_flights_by_delta_t(hours_num)
+
     def get_flight_by_id(self, id_):
         if not isinstance(id_, int):
             self.logger.logger.error(

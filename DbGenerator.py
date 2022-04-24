@@ -1,9 +1,4 @@
-import kivy
 from kivy.app import App
-from kivy.uix.label import Label
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.textinput import TextInput
-from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 from kivy.lang.builder import Builder
 from kivy.properties import ObjectProperty, StringProperty
@@ -72,12 +67,12 @@ def callback(ch, method, properties, body):
     progress_bar_value = list(data.values())[0]
     kivy_app = get_db_gen()
     kivy_app.ids.alerts_label.text = f'Generating {list(data.keys())[0]}'
-    kivy_app.update_progress_bar(progress_bar_value) # updating the progress bar
+    kivy_app.update_progress_bar(progress_bar_value)  # updating the progress bar
     if progress_bar_value == 100:
         kivy_app.ids.alerts_label.text = 'The data was successfully generated!'
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     repo = DbRepo(local_session)
     repo_thread = Thread(target=repo.reset_all_tables_auto_inc)
     repo_thread.start()

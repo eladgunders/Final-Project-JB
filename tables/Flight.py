@@ -37,4 +37,9 @@ class Flight(Base):
         return f'Flight[id={self.id}, airline_company_id={self.airline_company_id}, origin_country_id={self.origin_country_id}, ' \
                f'destination_country_id={self.destination_country_id}, departure_time={self.departure_time}, landing_time={self.landing_time}, ' \
                f'remaining_tickets={self.remaining_tickets}]'
+
+    def data_for_web(self):  # returning all the fields with relationship for the html page
+        return {'id': self.id, 'airline_company': self.airline_company.name, 'origin_country': self.origin_county.name, 
+                'destination_country': self.destination_county.name, 'departure_time': self.departure_time, 'landing_time': self.landing_time, 
+                'remaining_tickets': self.remaining_tickets}
     

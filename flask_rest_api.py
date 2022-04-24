@@ -1,9 +1,13 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
+from flask_cors import CORS
 from facades.AnonymousFacade import AnonymousFacade
 from data_access_objects.DbRepoPool import DbRepoPool
-import json
+
 
 app = Flask(__name__)
+CORS(app)
+
+repool = DbRepoPool.get_instance()
 
 
 @app.route("/")
@@ -11,23 +15,41 @@ def home():
     return render_template('home.html')
 
 
-@app.route("/myname")
-def my_name():
-    return render_template('my_name.html')
-
-
-@app.route("/getpower/<int:num>", methods=['GET'])
-def get_power(num):
-    return str(num**2)
+@app.route("/flights/tables")
+def flights_tables():
+    return render_template('flights_tables.html')
 
 
 @app.route("/flights", methods=['GET'])
 def get_all_flights():
-    repool = DbRepoPool.get_instance()
-    repo = repool.get_connection()
+    repo = repool.get_connection()  # getting a repo
     anonfcade = AnonymousFacade(repo)
     all_flights = anonfcade.get_all_flights()
-    return json.dumps(all_flights)
+    flights = [flight.data_for_web() for flight in all_flights]
+    repool.return_connection(repo)  # returning the repo
+    return jsonify(flights)
+
+
+@app.route("/arrivals/<int:hours_num>", methods=['GET'])
+def get_arrival_flights_by_delta_t(hours_num):
+    repo = repool.get_connection()  # getting a repo
+    anonfcade = AnonymousFacade(repo)
+    arrivals = anonfcade.get_arrival_flights_by_delta_t(hours_num)
+    flights = [flight.data_for_web() for flight in arrivals]
+    repool.return_connection(repo)  # returning the repo
+    return jsonify(flights)
+
+
+@app.route("/departures/<int:hours_num>", methods=['GET'])
+def get_departure_flights_by_delta_t(hours_num):
+    print(type(hours_num))
+    repo = repool.get_connection()  # getting a repo
+    anonfcade = AnonymousFacade(repo)
+    departures = anonfcade.get_departure_flights_by_delta_t(hours_num)
+    flights = [flight.data_for_web() for flight in departures]
+    repool.return_connection(repo)  # returning the repo
+    return jsonify(flights)
+
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

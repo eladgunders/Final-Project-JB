@@ -20,5 +20,6 @@ def callback(ch, method, properties, body):
     db_data.generate_data()
     return
 
+
 if __name__ == '__main__':
     main()

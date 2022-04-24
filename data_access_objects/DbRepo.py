@@ -7,7 +7,7 @@ from tables.Flight import Flight
 from tables.Ticket import Ticket
 from tables.User_Role import User_Role
 from tables.User import User
-from datetime import datetime
+from datetime import datetime, timedelta
 from logger.Logger import Logger
 from sqlalchemy.exc import OperationalError, IntegrityError
 
@@ -119,6 +119,22 @@ class DbRepo:
                                                            extract('month', Flight.departure_date) == landing_date.month,
                                                            extract('day',
                                                                    Flight.departure_date) == landing_date.day).all()
+        except OperationalError as e:
+            self.logger.logger.critical(e)
+
+    def get_departure_flights_by_delta_t(self, t: int):  # t is the number of hours
+        try:
+            flight_ls = self.get_by_condition(Flight, lambda query: query.filter(Flight.departure_time <= (datetime.now() + timedelta(hours=t)), Flight.departure_time >= (datetime.now())).all())
+            return flight_ls
+
+        except OperationalError as e:
+            self.logger.logger.critical(e)
+
+    def get_arrival_flights_by_delta_t(self, t):
+        try:
+            flight_ls = self.get_by_condition(Flight, lambda query: query.filter(Flight.landing_time <= (datetime.now() + timedelta(hours=t)), Flight.landing_time >= (datetime.now())).all())
+            return flight_ls
+
         except OperationalError as e:
             self.logger.logger.critical(e)
 
