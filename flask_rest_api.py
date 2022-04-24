@@ -25,7 +25,10 @@ def get_all_flights():
     repo = repool.get_connection()  # getting a repo
     anonfcade = AnonymousFacade(repo)
     all_flights = anonfcade.get_all_flights()
-    flights = [flight.data_for_web() for flight in all_flights]
+    if all_flights:
+        flights = [flight.data_for_web() for flight in all_flights]
+    else:
+        flights = []
     repool.return_connection(repo)  # returning the repo
     return jsonify(flights)
 
@@ -35,7 +38,10 @@ def get_arrival_flights_by_delta_t(hours_num):
     repo = repool.get_connection()  # getting a repo
     anonfcade = AnonymousFacade(repo)
     arrivals = anonfcade.get_arrival_flights_by_delta_t(hours_num)
-    flights = [flight.data_for_web() for flight in arrivals]
+    if arrivals:
+        flights = [flight.data_for_web() for flight in arrivals]
+    else:
+        flights = []
     repool.return_connection(repo)  # returning the repo
     return jsonify(flights)
 
@@ -46,7 +52,10 @@ def get_departure_flights_by_delta_t(hours_num):
     repo = repool.get_connection()  # getting a repo
     anonfcade = AnonymousFacade(repo)
     departures = anonfcade.get_departure_flights_by_delta_t(hours_num)
-    flights = [flight.data_for_web() for flight in departures]
+    if departures:
+        flights = [flight.data_for_web() for flight in departures]
+    else:
+        flights = []
     repool.return_connection(repo)  # returning the repo
     return jsonify(flights)
 
