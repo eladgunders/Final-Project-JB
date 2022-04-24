@@ -1,3 +1,8 @@
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
+
+
 // show departures flights in table
 $(document).ready(function()
 {
@@ -23,7 +28,8 @@ $(document).ready(function()
                                 `<tr><td class="fw-lighter">${flight.airline_company}</td>
                                      <td class="fw-lighter">${flight.origin_country}</td>
                                      <td class="fw-lighter">${flight.destination_country}</td>
-                                     <td class="fw-lighter">${flight.departure_time}</td>`)
+                                     <td class="fw-lighter">${flight.departure_time}</td>
+                                     <td class="fw-lighter">On time</td>`)
                                      
                 })
             }
@@ -54,16 +60,26 @@ $(document).ready(function()
                
                 let arrivals_table = $('#arrivals')
                 arrivals_table.find("tr:gt(0)").remove()
-            
-                
 
+                let rand_num
+                let status
+               
+            
                 $.each(flights,  (i, flight) => {
+                    rand_num = getRandomInt(10)
+                    if (rand_num === 1){
+                        status = 'Delayed'
+                    }
+                    else{
+                        status = 'On Time' 
+                    }
         
                     arrivals_table.append(
                                 `<tr><td class="fw-lighter">${flight.airline_company}</td>
                                      <td class="fw-lighter">${flight.origin_country}</td>
                                      <td class="fw-lighter">${flight.destination_country}</td>
-                                     <td class="fw-lighter">${flight.landing_time}</td>`)
+                                     <td class="fw-lighter">${flight.landing_time}</td>
+                                     <td class="fw-lighter">${status}</td>`)
                                      
                 })
             }
