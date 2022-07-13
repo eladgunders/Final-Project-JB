@@ -1,5 +1,5 @@
 __pycache__
 *.py[cod]
-venv396
-.idea
+venv396/
+.idea/
 .DS_Store

@@ -10,6 +10,7 @@ from tables.User import User
 from datetime import datetime, timedelta
 from logger.Logger import Logger
 from sqlalchemy.exc import OperationalError, IntegrityError
+from werkzeug.security import generate_password_hash
 
 
 class DbRepo:
@@ -285,13 +286,13 @@ class DbRepo:
             self.add(User_Role(role_name='Administrator'))
             self.add(User_Role(role_name='Not Legal'))
             # user
-            self.add(User(username='Elad', password='123', email='elad@gmail.com', user_role=1))
-            self.add(User(username='Uri', password='123', email='uri@gmail.com', user_role=1))
-            self.add(User(username='Yoni', password='123', email='yoni@gmail.com', user_role=2))
-            self.add(User(username='Yishay', password='123', email='yishay@gmail.com', user_role=2))
-            self.add(User(username='Tomer', password='123', email='tomer@gmail.com', user_role=3))
-            self.add(User(username='Boris', password='123', email='boris@gmail.com', user_role=3))
-            self.add(User(username='not legal', password='123', email='notlegal@gmail.com', user_role=4))
+            self.add(User(username='Elad', password=generate_password_hash('123', method='sha256'), email='elad@gmail.com', user_role=1))
+            self.add(User(username='Uri', password=generate_password_hash('123', method='sha256'), email='uri@gmail.com', user_role=1))
+            self.add(User(username='Yoni', password=generate_password_hash('123', method='sha256'), email='yoni@gmail.com', user_role=2))
+            self.add(User(username='Yishay', password=generate_password_hash('123', method='sha256'), email='yishay@gmail.com', user_role=2))
+            self.add(User(username='Tomer', password=generate_password_hash('123', method='sha256'), email='tomer@gmail.com', user_role=3))
+            self.add(User(username='Boris', password=generate_password_hash('123', method='sha256'), email='boris@gmail.com', user_role=3))
+            self.add(User(username='not legal', password=generate_password_hash('123', method='sha256'), email='notlegal@gmail.com', user_role=4))
             # administrator
             self.add(Administrator(first_name='Tomer', last_name='Tome', user_id=5))
             self.add(Administrator(first_name='Boris', last_name='Bori', user_id=6))

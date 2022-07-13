@@ -8,6 +8,7 @@ from login_token.LoginToken import LoginToken
 from custom_errors.UserRoleTableError import UserRoleTableError
 from custom_errors.WrongLoginDataError import WrongLoginDataError
 from custom_errors.NotValidDataError import NotValidDataError
+from werkzeug.security import check_password_hash
 
 
 class AnonymousFacade(FacadeBase):
@@ -23,10 +24,15 @@ class AnonymousFacade(FacadeBase):
         super().__init__(self.repo)
 
     def login(self, username, pw):
-        user = self.repo.get_by_condition(User, lambda query: query.filter(User.username == username, User.password == pw).first())
+
+        user = self.repo.get_by_condition(User, lambda query: query.filter(User.username == username).first())
         if not user:
             self.logger.logger.info(
-                f'Wrong username {username} or password {pw} has been entered to the login function.')
+                f'Wrong username {username} has been entered to the login function.')
+            raise WrongLoginDataError
+        if not check_password_hash(user.password, pw):
+            self.logger.logger.info(
+                f'Wrong password {pw} has been entered to the login function.')
             raise WrongLoginDataError
         try:
             name = eval(f'user.{AnonymousFacade.user_backref_and_name_column_dic[user.user_role][0]}.'

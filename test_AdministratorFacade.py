@@ -6,6 +6,7 @@ from tables.Customer import Customer
 from tables.Airline_Company import Airline_Company
 from custom_errors.NotValidDataError import NotValidDataError
 from data_access_objects.DbRepoPool import DbRepoPool
+from werkzeug.security import generate_password_hash
 
 
 @pytest.fixture(scope='session')
@@ -23,7 +24,7 @@ def reset_db(administrator_facade_object):
     return
 
 
-@pytest.mark.parametrize('user, administrator, expected', [(User(username='Eladi', password='123', email='eladi@gmail.com', user_role=3),
+@pytest.mark.parametrize('user, administrator, expected', [(User(username='Eladi', password=generate_password_hash('123', method='sha256'), email='eladi@gmail.com', user_role=3),
                                                             Administrator(first_name='Borissss', last_name='Boriiii', user_id=6), True)])
 def test_administrator_facade_add_administrator(administrator_facade_object, user, administrator, expected):
     actual = administrator_facade_object.add_administrator(user, administrator)
@@ -31,9 +32,9 @@ def test_administrator_facade_add_administrator(administrator_facade_object, use
 
 
 @pytest.mark.parametrize('user, administrator', [('not user', 2),
-                                                 (User(username='Elad', password='123', email='elad@gmail.com', user_role=9), 2),
-                                                 (User(username='Elad', password='123', email='elad@gmail.com', user_role=3), 2),
-                                                 (User(username='Eladi', password='123', email='eladi@gmail.com', user_role=3), 'k')])
+                                                 (User(username='Elad', password=generate_password_hash('123', method='sha256'), email='elad@gmail.com', user_role=9), 2),
+                                                 (User(username='Elad', password=generate_password_hash('123', method='sha256'), email='elad@gmail.com', user_role=3), 2),
+                                                 (User(username='Eladi', password=generate_password_hash('123', method='sha256'), email='eladi@gmail.com', user_role=3), 'k')])
 def test_administrator_facade_add_administrator_raise_notvaliddataerror(administrator_facade_object, user, administrator):
     with pytest.raises(NotValidDataError):
         administrator_facade_object.add_administrator(user, administrator)
@@ -85,7 +86,7 @@ def test_administrator_facade_remove_airline_raise_notvaliddataerror(administrat
 
 
 @pytest.mark.parametrize('user, customer, expected', [
-                                                      (User(username='Elados', password='123', email='eladii@gmail.com', user_role=1),
+                                                      (User(username='Elados', password=generate_password_hash('123', method='sha256'), email='eladii@gmail.com', user_role=1),
                                                        Customer(first_name='kk', last_name='lk', address='Sokolov 1',
                                                         phone_no='0545557004', credit_card_no='0055', user_id=8) , True)
                                                       ])
@@ -96,24 +97,24 @@ def test_administrator_facade_add_customer(administrator_facade_object, user, cu
 
 @pytest.mark.parametrize('user, customer', [(1, 1),
                                             (
-                                            User(username='Elad', password='123', email='eladi@gmail.com', user_role=2),
+                                            User(username='Elad', password=generate_password_hash('123', method='sha256'), email='eladi@gmail.com', user_role=2),
                                             Customer(first_name='kk', last_name='lk', address='Sokolov 1',
                                                      phone_no='0545557000', credit_card_no='0099', user_id=1)),
-                                            (User(username='Elados', password='123', email='eladi@gmail.coom',
+                                            (User(username='Elados', password=generate_password_hash('123', method='sha256'), email='eladi@gmail.coom',
                                                   user_role=2),
                                              Customer(first_name='kk', last_name='lk', address='Sokolov 1',
                                                       phone_no='0545557000', credit_card_no='0099', user_id=1)),
-                                                (User(username='Elad', password='123', email='eladi@gmail.com',
+                                                (User(username='Elad', password=generate_password_hash('123', method='sha256'), email='eladi@gmail.com',
                                                       user_role=1),
                                                  Customer(first_name='kk', last_name='lk', address='Sokolov 1',
                                                           phone_no='0545557000', credit_card_no='0099', user_id=1)),
-                                                (User(username='Elados', password='123', email='eladi@gmail.coom',
+                                                (User(username='Elados', password=generate_password_hash('123', method='sha256'), email='eladi@gmail.coom',
                                                       user_role=2), 'g'),
-                                            (User(username='Elados', password='123', email='eladii@gmail.com',
+                                            (User(username='Elados', password=generate_password_hash('123', method='sha256'), email='eladii@gmail.com',
                                                  user_role=1),
                                             Customer(first_name='kk', last_name='lk', address='Sokolov 1',
                                                      phone_no='0545557007', credit_card_no='0099', user_id=1)),
-                                            (User(username='Elados', password='123', email='eladii@gmail.com',
+                                            (User(username='Elados', password=generate_password_hash('123', method='sha256'), email='eladii@gmail.com',
                                                   user_role=1),
                                              Customer(first_name='kk', last_name='lk', address='Sokolov 1',
                                                       phone_no='0545557004', credit_card_no='0000', user_id=1))])
@@ -123,7 +124,7 @@ def test_administrator_facade_add_customer_raise_notvaliddataerror(administrator
 
 
 @pytest.mark.parametrize('user, airline, expected', [
-                                                     (User(username='Eladi', password='123', email='eladi@gmail.com', user_role=2),
+                                                     (User(username='Eladi', password=generate_password_hash('123', method='sha256'), email='eladi@gmail.com', user_role=2),
                                                       Airline_Company(name='Yonchkin', country_id=1, user_id=8), True)])
 def test_administrator_facade_add_airline(administrator_facade_object, user, airline, expected):
     actual = administrator_facade_object.add_airline(user, airline)
@@ -131,13 +132,13 @@ def test_administrator_facade_add_airline(administrator_facade_object, user, air
 
 
 @pytest.mark.parametrize('user, airline', [(1, 1),
-                                           (User(username='Elad', password='123', email='eladi@gmail.com', user_role=1), 1),
-                                           (User(username='Eladi', password='123', email='eladi@gmail.com', user_role=2), 1),
+                                           (User(username='Elad', password=generate_password_hash('123', method='sha256'), email='eladi@gmail.com', user_role=1), 1),
+                                           (User(username='Eladi', password=generate_password_hash('123', method='sha256'), email='eladi@gmail.com', user_role=2), 1),
                                            (
-                                           User(username='Eladi', password='123', email='eladi@gmail.com', user_role=2),
+                                           User(username='Eladi', password=generate_password_hash('123', method='sha256'), email='eladi@gmail.com', user_role=2),
                                            Airline_Company(name='Yoni', country_id=1, user_id=3)),
                                            (
-                                           User(username='Eladi', password='123', email='eladi@gmail.com', user_role=2),
+                                           User(username='Eladi', password=generate_password_hash('123', method='sha256'), email='eladi@gmail.com', user_role=2),
                                            Airline_Company(name='Yonchkin', country_id=3, user_id=3))])
 def test_administrator_facade_add_airline_raise_notvaliddataerror(administrator_facade_object, user, airline):
     with pytest.raises(NotValidDataError):

@@ -9,6 +9,7 @@ from tables.User_Role import User_Role
 from sqlalchemy import extract
 from logger.Logger import Logger
 from login_token.LoginToken import LoginToken
+from werkzeug.security import generate_password_hash
 
 
 class FacadeBase(ABC):
@@ -130,6 +131,7 @@ class FacadeBase(ABC):
                 f'The login token "{self.login_token}" used the function create_user but the user.user_role '
                 f'"{user.user_role}" that was sent does not exist in the db.')
             raise NotValidDataError
+        user.password = generate_password_hash(user.password, method='sha256')
         user.id = None
         self.logger.logger.debug(f'The login token "{self.login_token}" used the function create_user and new user '
                                  f'"{user}" has ben added to the db.')

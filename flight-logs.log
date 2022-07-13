@@ -1,20 +1,275 @@
-2022-03-23 19:51:42,011:DbRepo:107548:56548:CRITICAL:(psycopg2.errors.DeadlockDetected) deadlock detected
-LINE 1: INSERT INTO countries (name) VALUES ('Afghanistan'),('land I...
-                    ^
-DETAIL:  Process 107728 waits for RowExclusiveLock on relation 225524 of database 28039; blocked by process 43776.
-Process 43776 waits for AccessExclusiveLock on relation 225645 of database 28039; blocked by process 107728.
-HINT:  See server log for query details.
+2022-06-12 20:08:21,835:AnonymousFacade:31074:8632374784:INFO:Wrong username Boris has been entered to the login function.
+2022-06-12 20:08:22,060:AnonymousFacade:31074:8632374784:INFO:Wrong username Yoni has been entered to the login function.
+2022-06-12 20:08:24,020:AnonymousFacade:31074:8632374784:INFO:Wrong password 123 has been entered to the login function.
+2022-06-12 20:08:25,701:AnonymousFacade:31074:8632374784:INFO:Wrong password 123 has been entered to the login function.
+2022-06-12 20:08:27,395:AnonymousFacade:31074:8632374784:INFO:Wrong password 123 has been entered to the login function.
+2022-06-12 20:08:29,054:AnonymousFacade:31074:8632374784:INFO:Wrong username hh has been entered to the login function.
+2022-06-12 20:08:30,706:AnonymousFacade:31074:8632374784:INFO:Wrong password 123 has been entered to the login function.
+2022-06-12 20:08:30,715:AnonymousFacade:31074:8632374784:INFO:Wrong password 123 has been entered to the login function.
+2022-06-12 20:08:40,651:FacadeBase:31074:8632374784:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_parameters but the county ids "f" and "3" that was sent must be integers
+2022-06-12 20:08:42,347:FacadeBase:31074:8632374784:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_parameters but the county ids "3" and "r" that was sent must be integers
+2022-06-12 20:08:44,015:FacadeBase:31074:8632374784:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_parameters but the county ids "0" and "4" that was sent must be positive
+2022-06-12 20:08:45,647:FacadeBase:31074:8632374784:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_parameters but the the date "4" that was sent must be a Datetime object
+2022-06-12 20:08:53,958:FacadeBase:31074:8632374784:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_airline_by_id but the id "h" that was sent is not an integer.
+2022-06-12 20:08:55,599:FacadeBase:31074:8632374784:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_airline_by_id but the id "0" that was sent is not positive.
+2022-06-12 20:09:03,867:FacadeBase:31074:8632374784:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_country_by_id but the id "6" that was sent is not an integer.
+2022-06-12 20:09:05,500:FacadeBase:31074:8632374784:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_country_by_id but the id "0" that was sent is not positive.
+2022-06-12 20:09:08,883:FacadeBase:31074:8632374784:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function create_user but the user "notuser" that was sent must be instance if the class User.
+2022-06-12 20:09:10,556:FacadeBase:31074:8632374784:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function create_user but the user.username "Elad" that was sent already exists in the db.
+2022-06-12 20:09:12,223:FacadeBase:31074:8632374784:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function create_user but the user.email "elad@gmail.com" that was sent already exists in the db.
+2022-06-12 20:09:13,867:FacadeBase:31074:8632374784:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function create_user but the user.user_role "5" that was sent does not exist in the db.
+2022-06-12 20:09:17,148:FacadeBase:31074:8632374784:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_airline_id but the airline_id "not int" that was sent is not an integer.
+2022-06-12 20:09:18,795:FacadeBase:31074:8632374784:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_airline_id but the airline_id "0" that was sent is not positive.
+2022-06-12 20:09:20,445:FacadeBase:31074:8632374784:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_airline_id but the airline_id "7" that was sent is not exists in the db.
+2022-06-12 20:17:42,906:AnonymousFacade:31403:8606684672:INFO:Wrong password 123 has been entered to the login function.
+2022-06-12 20:17:43,126:AnonymousFacade:31403:8606684672:INFO:Wrong password 123 has been entered to the login function.
+2022-06-12 20:17:49,964:AnonymousFacade:31403:8606684672:INFO:Wrong username hh has been entered to the login function.
+2022-06-12 20:17:51,617:AnonymousFacade:31403:8606684672:ERROR:User Roles table contains more than 3 user roles. Please check it ASAP.
+2022-06-12 20:17:54,920:CustomerFacade:31403:8606684672:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" sent to the function customer :"not customer" update_customer but its not a Customer object.
+2022-06-12 20:17:56,583:CustomerFacade:31403:8606684672:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" used the function update_customer but the phone number "0545557007" already exists in the db.
+2022-06-12 20:17:58,234:CustomerFacade:31403:8606684672:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" used the function update_customer but the credit card number "0000" already exists in the db.
+2022-06-12 20:18:01,549:CustomerFacade:31403:8606684672:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" tried to use the function remove_ticket but the ticket "not ticket" that was sent is not a Ticket object.
+2022-06-12 20:18:03,208:CustomerFacade:31403:8606684672:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" tried to use the function remove_ticket but the ticket "Ticket[id=None, flight_id=3, customer_id=3]" that was sent not exist in the db.
+2022-06-12 20:18:04,859:CustomerFacade:31403:8606684672:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" tried to use the function remove_ticket but the ticket "Ticket[id=None, flight_id=1, customer_id=1]" that was sent not exist in the db.
+2022-06-12 20:18:08,188:CustomerFacade:31403:8606684672:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" tried to use the function add_ticket but the flight has no remaining tickets
+2022-06-12 20:18:11,533:CustomerFacade:31403:8606684672:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" tried to use the function add_ticket but the ticket "not ticket" that was sent to the function is not a Ticket object.
+2022-06-12 20:18:13,209:CustomerFacade:31403:8606684672:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" tried to use the function add_ticket but the flight.id "4" that was sent to the function not exists in the db.
+2022-06-12 20:18:23,554:FacadeBase:31403:8606684672:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_parameters but the county ids "f" and "3" that was sent must be integers
+2022-06-12 20:18:25,213:FacadeBase:31403:8606684672:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_parameters but the county ids "3" and "r" that was sent must be integers
+2022-06-12 20:18:26,885:FacadeBase:31403:8606684672:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_parameters but the county ids "0" and "4" that was sent must be positive
+2022-06-12 20:18:28,534:FacadeBase:31403:8606684672:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_parameters but the the date "4" that was sent must be a Datetime object
+2022-06-12 20:18:36,865:FacadeBase:31403:8606684672:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_airline_by_id but the id "h" that was sent is not an integer.
+2022-06-12 20:18:38,548:FacadeBase:31403:8606684672:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_airline_by_id but the id "0" that was sent is not positive.
+2022-06-12 20:18:46,872:FacadeBase:31403:8606684672:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_country_by_id but the id "6" that was sent is not an integer.
+2022-06-12 20:18:48,515:FacadeBase:31403:8606684672:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_country_by_id but the id "0" that was sent is not positive.
+2022-06-12 20:18:51,838:FacadeBase:31403:8606684672:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function create_user but the user "notuser" that was sent must be instance if the class User.
+2022-06-12 20:18:53,487:FacadeBase:31403:8606684672:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function create_user but the user.username "Elad" that was sent already exists in the db.
+2022-06-12 20:18:55,257:FacadeBase:31403:8606684672:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function create_user but the user.email "elad@gmail.com" that was sent already exists in the db.
+2022-06-12 20:18:56,936:FacadeBase:31403:8606684672:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function create_user but the user.user_role "5" that was sent does not exist in the db.
+2022-06-12 20:19:00,298:FacadeBase:31403:8606684672:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_airline_id but the airline_id "not int" that was sent is not an integer.
+2022-06-12 20:19:01,952:FacadeBase:31403:8606684672:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_airline_id but the airline_id "0" that was sent is not positive.
+2022-06-12 20:19:03,610:FacadeBase:31403:8606684672:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_airline_id but the airline_id "7" that was sent is not exists in the db.
+2022-06-12 20:24:27,168:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_administrator but the user "not user" that was sent is not a User object.
+2022-06-12 20:24:28,812:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_administrator but the user.user_role "9" that was sent is not 3(Administrator).
+2022-06-12 20:24:30,400:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_administrator but the administrator "2" that was sent is not an Administrator object.
+2022-06-12 20:24:32,020:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_administrator but the administrator "k" that was sent is not an Administrator object.
+2022-06-12 20:24:37,014:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function remove_administrator but the administrator_id "not int" that was sent is not an integer.
+2022-06-12 20:24:38,673:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function remove_administrator but the administrator_id "-1" that was sent is not positive.
+2022-06-12 20:24:40,318:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function remove_administrator but the administrator_id "3" that was sent does not exist in the db.
+2022-06-12 20:24:45,334:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function remove_customer but the customer_id "f" that was sent is not an integer.
+2022-06-12 20:24:46,989:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function remove_customer but the customer_id "0" that was sent is not positive.
+2022-06-12 20:24:48,628:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function remove_customer but the customer_id "3" that was sent does not exist in the db.
+2022-06-12 20:24:51,931:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function remove_airline but the airline_id "f" that was sent is not an integer.
+2022-06-12 20:24:53,567:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function remove_airline but the airline_id "-1" that was sent is not an positive.
+2022-06-12 20:24:55,231:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function remove_airline but the airline_id "4" that was sent does not exist in the db.
+2022-06-12 20:24:58,560:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but user "1" that was sent is not a User instance.
+2022-06-12 20:25:00,212:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but the user.user_role "2" that was sent is not 1(Customer).
+2022-06-12 20:25:01,851:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but the user.user_role "2" that was sent is not 1(Customer).
+2022-06-12 20:25:03,531:FacadeBase:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" used the function create_user but the user.username "Elad" that was sent already exists in the db.
+2022-06-12 20:25:05,186:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but the user.user_role "2" that was sent is not 1(Customer).
+2022-06-12 20:25:06,841:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but customer.phone_no "0545557007" that was sent already exists in the db.
+2022-06-12 20:25:08,485:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but customer.credit_card_no "0000" that was sent already exists in the db.
+2022-06-12 20:25:11,924:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but user "1" that was sent is not a User instance.
+2022-06-12 20:25:13,576:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but customer "1" that was sent is not a Customer object.
+2022-06-12 20:25:15,230:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but the user.user_role "2" that was sent is not 1(Customer).
+2022-06-12 20:25:16,878:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but the user.user_role "2" that was sent is not 1(Customer).
+2022-06-12 20:25:18,525:AdministratorFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but the user.user_role "2" that was sent is not 1(Customer).
+2022-06-12 20:25:23,508:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function add_flight but the flight "not flight" that was sent is not a Flight object.
+2022-06-12 20:25:25,160:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function add_flight but the origin_country_id "3"that was sent not exists in the db.
+2022-06-12 20:25:26,827:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function add_flight but the destination_country_id "3"that was sent not exists in the db.
+2022-06-12 20:25:28,495:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function add_flight but both departure_time "1" and landing_time "2022-01-30 20:00:00" must be a Datetime objects.
+2022-06-12 20:25:30,149:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function add_flight but both departure_time "2022-01-30 16:00:00" and landing_time "not datetime" must be a Datetime objects.
+2022-06-12 20:25:31,824:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function add_flight but the remaining_tickets "100.7" that was sent is not an integer.
+2022-06-12 20:25:33,477:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function add_flight but the remaining_tickets "99" that was sent must be more or equal than 100.
+2022-06-12 20:25:35,129:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function add_flight but the time delta between departure_time "2022-01-30 17:00:00" and landing time "2022-01-30 17:59:00" is less than one hour.
+2022-06-12 20:25:38,625:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_airline but the airline "not airline" that was sent is not an Airline Company object.
+2022-06-12 20:25:40,353:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_airline but the airline.name "Yishay" already exists in the db.
+2022-06-12 20:25:42,069:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_airline but the airline.country_id "3" not exists in the db.
+2022-06-12 20:25:45,613:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the flight "not flight" that was sent is not a Flight object.
+2022-06-12 20:25:47,363:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the flight.id "None" that was sent is not an integer.
+2022-06-12 20:25:49,406:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the flight.id "None" that was sent is not an integer.
+2022-06-12 20:25:51,180:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the flight.id "None" that was sent is not an integer.
+2022-06-12 20:25:52,989:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the flight.id "None" that was sent is not an integer.
+2022-06-12 20:25:54,824:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the flight.id "None" that was sent is not an integer.
+2022-06-12 20:25:56,621:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the flight.id "None" that was sent is not an integer.
+2022-06-12 20:25:58,375:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the flight.id "None" that was sent is not an integer.
+2022-06-12 20:26:00,252:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the flight.id "3" that was sent does not exists in the db.
+2022-06-12 20:26:02,209:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the flight with the flight.id "2" that was sent does not belong to the login token Airline Company.
+2022-06-12 20:26:03,915:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the time delta between departure_time "2022-01-30 17:00:00" and landing time "2022-01-30 17:59:00" is less than one hour.
+2022-06-12 20:26:05,615:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the remaining_tickets "-5" that was sent must be more or equal than 100.
+2022-06-12 20:26:08,999:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function remove_flight but the flight_id "not_id" that was sent is not an integer.
+2022-06-12 20:26:10,689:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function remove_flight but the flight_id "0" that was sent is not positive.
+2022-06-12 20:26:12,355:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function remove_flight but the flight_id "4" not exists in the db.
+2022-06-12 20:26:14,005:AirlineFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function remove_flight but the flight "[Flight(id=2, airline_company_id=2, origin_country_id=1, destination_country_id=2, departure_time=2022-01-30 16:00:00, landing_time=2022-01-30 20:00:00, remaining_tickets=0)]" not belongs to the login token airline company.
+2022-06-12 20:26:20,620:AnonymousFacade:31548:8668272128:INFO:Wrong username hh has been entered to the login function.
+2022-06-12 20:26:22,261:AnonymousFacade:31548:8668272128:ERROR:User Roles table contains more than 3 user roles. Please check it ASAP.
+2022-06-12 20:26:25,614:CustomerFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" sent to the function customer :"not customer" update_customer but its not a Customer object.
+2022-06-12 20:26:27,273:CustomerFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" used the function update_customer but the phone number "0545557007" already exists in the db.
+2022-06-12 20:26:28,905:CustomerFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" used the function update_customer but the credit card number "0000" already exists in the db.
+2022-06-12 20:26:32,135:CustomerFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" tried to use the function remove_ticket but the ticket "not ticket" that was sent is not a Ticket object.
+2022-06-12 20:26:33,738:CustomerFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" tried to use the function remove_ticket but the ticket "Ticket[id=None, flight_id=3, customer_id=3]" that was sent not exist in the db.
+2022-06-12 20:26:35,334:CustomerFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" tried to use the function remove_ticket but the ticket "Ticket[id=None, flight_id=1, customer_id=1]" that was sent not exist in the db.
+2022-06-12 20:26:38,585:CustomerFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" tried to use the function add_ticket but the flight has no remaining tickets
+2022-06-12 20:26:41,997:CustomerFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" tried to use the function add_ticket but the ticket "not ticket" that was sent to the function is not a Ticket object.
+2022-06-12 20:26:43,654:CustomerFacade:31548:8668272128:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" tried to use the function add_ticket but the flight.id "4" that was sent to the function not exists in the db.
+2022-06-12 20:26:57,757:FacadeBase:31548:8668272128:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_parameters but the county ids "f" and "3" that was sent must be integers
+2022-06-12 20:27:00,918:FacadeBase:31548:8668272128:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_parameters but the county ids "3" and "r" that was sent must be integers
+2022-06-12 20:27:03,045:FacadeBase:31548:8668272128:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_parameters but the county ids "0" and "4" that was sent must be positive
+2022-06-12 20:27:05,034:FacadeBase:31548:8668272128:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_parameters but the the date "4" that was sent must be a Datetime object
+2022-06-12 20:27:14,401:FacadeBase:31548:8668272128:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_airline_by_id but the id "h" that was sent is not an integer.
+2022-06-12 20:27:16,149:FacadeBase:31548:8668272128:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_airline_by_id but the id "0" that was sent is not positive.
+2022-06-12 20:27:24,594:FacadeBase:31548:8668272128:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_country_by_id but the id "6" that was sent is not an integer.
+2022-06-12 20:27:26,251:FacadeBase:31548:8668272128:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_country_by_id but the id "0" that was sent is not positive.
+2022-06-12 20:27:29,563:FacadeBase:31548:8668272128:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function create_user but the user "notuser" that was sent must be instance if the class User.
+2022-06-12 20:27:31,214:FacadeBase:31548:8668272128:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function create_user but the user.username "Elad" that was sent already exists in the db.
+2022-06-12 20:27:32,873:FacadeBase:31548:8668272128:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function create_user but the user.email "elad@gmail.com" that was sent already exists in the db.
+2022-06-12 20:27:34,526:FacadeBase:31548:8668272128:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function create_user but the user.user_role "5" that was sent does not exist in the db.
+2022-06-12 20:27:37,835:FacadeBase:31548:8668272128:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_airline_id but the airline_id "not int" that was sent is not an integer.
+2022-06-12 20:27:39,536:FacadeBase:31548:8668272128:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_airline_id but the airline_id "0" that was sent is not positive.
+2022-06-12 20:27:41,195:FacadeBase:31548:8668272128:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_airline_id but the airline_id "7" that was sent is not exists in the db.
+2022-07-13 17:05:50,116:DbRepo:26504:8671598080:CRITICAL:(psycopg2.OperationalError) connection to server at "localhost" (::1), port 5431 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 5431 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
 
-[SQL: INSERT INTO countries (name) VALUES (%(name)s) RETURNING countries.id]
-[parameters: ({'name': 'Afghanistan'}, {'name': 'land Islands'}, {'name': 'Albania'}, {'name': 'Algeria'}, {'name': 'American Samoa'}, {'name': 'AndorrA'}, {'name': 'Angola'}, {'name': 'Anguilla'}  ... displaying 10 of 244 total bound parameter sets ...  {'name': 'Zambia'}, {'name': 'Zimbabwe'})]
 (Background on this error at: https://sqlalche.me/e/14/e3q8)
-2022-03-23 19:53:07,043:DbRepo:101968:96768:CRITICAL:(psycopg2.errors.DeadlockDetected) deadlock detected
-LINE 1: INSERT INTO countries (name) VALUES ('Afghanistan'),('land I...
-                    ^
-DETAIL:  Process 114032 waits for RowExclusiveLock on relation 225524 of database 28039; blocked by process 43776.
-Process 43776 waits for AccessExclusiveLock on relation 225645 of database 28039; blocked by process 114032.
-HINT:  See server log for query details.
+2022-07-13 17:05:50,116:AnonymousFacade:26504:8671598080:INFO:Wrong username Boris has been entered to the login function.
+2022-07-13 17:05:50,331:DbRepo:26504:8671598080:CRITICAL:(psycopg2.OperationalError) connection to server at "localhost" (::1), port 5431 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 5431 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
 
-[SQL: INSERT INTO countries (name) VALUES (%(name)s) RETURNING countries.id]
-[parameters: ({'name': 'Afghanistan'}, {'name': 'land Islands'}, {'name': 'Albania'}, {'name': 'Algeria'}, {'name': 'American Samoa'}, {'name': 'AndorrA'}, {'name': 'Angola'}, {'name': 'Anguilla'}  ... displaying 10 of 244 total bound parameter sets ...  {'name': 'Zambia'}, {'name': 'Zimbabwe'})]
 (Background on this error at: https://sqlalche.me/e/14/e3q8)
+2022-07-13 17:05:50,331:AnonymousFacade:26504:8671598080:INFO:Wrong username Yoni has been entered to the login function.
+2022-07-13 17:05:50,516:DbRepo:26504:8671598080:CRITICAL:(psycopg2.OperationalError) connection to server at "localhost" (::1), port 5431 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 5431 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2022-07-13 17:05:50,516:DbRepo:26504:8671598080:CRITICAL:(psycopg2.OperationalError) connection to server at "localhost" (::1), port 5431 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 5431 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2022-07-13 17:05:50,517:DbRepo:26504:8671598080:CRITICAL:(psycopg2.OperationalError) connection to server at "localhost" (::1), port 5431 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 5431 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2022-07-13 17:05:50,517:DbRepo:26504:8671598080:CRITICAL:(psycopg2.OperationalError) connection to server at "localhost" (::1), port 5431 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 5431 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2022-07-13 17:05:50,518:DbRepo:26504:8671598080:CRITICAL:(psycopg2.OperationalError) connection to server at "localhost" (::1), port 5431 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 5431 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2022-07-13 17:05:50,519:DbRepo:26504:8671598080:CRITICAL:(psycopg2.OperationalError) connection to server at "localhost" (::1), port 5431 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 5431 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2022-07-13 17:05:50,519:DbRepo:26504:8671598080:CRITICAL:(psycopg2.OperationalError) connection to server at "localhost" (::1), port 5431 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 5431 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2022-07-13 17:05:50,520:DbRepo:26504:8671598080:CRITICAL:(psycopg2.OperationalError) connection to server at "localhost" (::1), port 5431 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 5431 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2022-07-13 17:05:50,521:DbRepo:26504:8671598080:CRITICAL:(psycopg2.OperationalError) connection to server at "localhost" (::1), port 5431 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 5431 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+2022-07-13 17:07:39,044:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_administrator but the user "not user" that was sent is not a User object.
+2022-07-13 17:07:40,747:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_administrator but the user.user_role "9" that was sent is not 3(Administrator).
+2022-07-13 17:07:42,385:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_administrator but the administrator "2" that was sent is not an Administrator object.
+2022-07-13 17:07:44,040:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_administrator but the administrator "k" that was sent is not an Administrator object.
+2022-07-13 17:07:48,954:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function remove_administrator but the administrator_id "not int" that was sent is not an integer.
+2022-07-13 17:07:50,615:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function remove_administrator but the administrator_id "-1" that was sent is not positive.
+2022-07-13 17:07:52,271:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function remove_administrator but the administrator_id "3" that was sent does not exist in the db.
+2022-07-13 17:07:57,233:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function remove_customer but the customer_id "f" that was sent is not an integer.
+2022-07-13 17:07:58,892:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function remove_customer but the customer_id "0" that was sent is not positive.
+2022-07-13 17:08:00,572:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function remove_customer but the customer_id "3" that was sent does not exist in the db.
+2022-07-13 17:08:03,838:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function remove_airline but the airline_id "f" that was sent is not an integer.
+2022-07-13 17:08:05,485:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function remove_airline but the airline_id "-1" that was sent is not an positive.
+2022-07-13 17:08:07,113:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function remove_airline but the airline_id "4" that was sent does not exist in the db.
+2022-07-13 17:08:10,419:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but user "1" that was sent is not a User instance.
+2022-07-13 17:08:12,078:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but the user.user_role "2" that was sent is not 1(Customer).
+2022-07-13 17:08:13,691:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but the user.user_role "2" that was sent is not 1(Customer).
+2022-07-13 17:08:15,332:FacadeBase:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" used the function create_user but the user.username "Elad" that was sent already exists in the db.
+2022-07-13 17:08:16,973:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but the user.user_role "2" that was sent is not 1(Customer).
+2022-07-13 17:08:18,588:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but customer.phone_no "0545557007" that was sent already exists in the db.
+2022-07-13 17:08:20,276:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but customer.credit_card_no "0000" that was sent already exists in the db.
+2022-07-13 17:08:23,627:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but user "1" that was sent is not a User instance.
+2022-07-13 17:08:25,252:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but customer "1" that was sent is not a Customer object.
+2022-07-13 17:08:26,868:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but the user.user_role "2" that was sent is not 1(Customer).
+2022-07-13 17:08:28,517:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but the user.user_role "2" that was sent is not 1(Customer).
+2022-07-13 17:08:30,145:AdministratorFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but the user.user_role "2" that was sent is not 1(Customer).
+2022-07-13 17:08:35,101:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function add_flight but the flight "not flight" that was sent is not a Flight object.
+2022-07-13 17:08:36,765:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function add_flight but the origin_country_id "3"that was sent not exists in the db.
+2022-07-13 17:08:38,405:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function add_flight but the destination_country_id "3"that was sent not exists in the db.
+2022-07-13 17:08:40,080:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function add_flight but both departure_time "1" and landing_time "2022-01-30 20:00:00" must be a Datetime objects.
+2022-07-13 17:08:41,756:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function add_flight but both departure_time "2022-01-30 16:00:00" and landing_time "not datetime" must be a Datetime objects.
+2022-07-13 17:08:43,402:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function add_flight but the remaining_tickets "100.7" that was sent is not an integer.
+2022-07-13 17:08:45,054:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function add_flight but the remaining_tickets "99" that was sent must be more or equal than 100.
+2022-07-13 17:08:46,693:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function add_flight but the time delta between departure_time "2022-01-30 17:00:00" and landing time "2022-01-30 17:59:00" is less than one hour.
+2022-07-13 17:08:50,047:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_airline but the airline "not airline" that was sent is not an Airline Company object.
+2022-07-13 17:08:51,745:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_airline but the airline.name "Yishay" already exists in the db.
+2022-07-13 17:08:53,411:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_airline but the airline.country_id "3" not exists in the db.
+2022-07-13 17:08:56,670:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the flight "not flight" that was sent is not a Flight object.
+2022-07-13 17:08:58,372:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the flight.id "None" that was sent is not an integer.
+2022-07-13 17:09:00,025:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the flight.id "None" that was sent is not an integer.
+2022-07-13 17:09:01,648:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the flight.id "None" that was sent is not an integer.
+2022-07-13 17:09:03,268:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the flight.id "None" that was sent is not an integer.
+2022-07-13 17:09:04,920:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the flight.id "None" that was sent is not an integer.
+2022-07-13 17:09:06,552:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the flight.id "None" that was sent is not an integer.
+2022-07-13 17:09:08,178:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the flight.id "None" that was sent is not an integer.
+2022-07-13 17:09:09,816:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the flight.id "3" that was sent does not exists in the db.
+2022-07-13 17:09:11,449:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the flight with the flight.id "2" that was sent does not belong to the login token Airline Company.
+2022-07-13 17:09:13,082:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the time delta between departure_time "2022-01-30 17:00:00" and landing time "2022-01-30 17:59:00" is less than one hour.
+2022-07-13 17:09:14,716:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function update_flight but the remaining_tickets "-5" that was sent must be more or equal than 100.
+2022-07-13 17:09:17,969:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function remove_flight but the flight_id "not_id" that was sent is not an integer.
+2022-07-13 17:09:19,601:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function remove_flight but the flight_id "0" that was sent is not positive.
+2022-07-13 17:09:21,269:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function remove_flight but the flight_id "4" not exists in the db.
+2022-07-13 17:09:22,932:AirlineFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=1, name="Yoni", role="airline_companies"]" tried to use the function remove_flight but the flight "[Flight(id=2, airline_company_id=2, origin_country_id=1, destination_country_id=2, departure_time=2022-01-30 16:00:00, landing_time=2022-01-30 20:00:00, remaining_tickets=0)]" not belongs to the login token airline company.
+2022-07-13 17:09:29,505:AnonymousFacade:26717:8636864000:INFO:Wrong username hh has been entered to the login function.
+2022-07-13 17:09:31,143:AnonymousFacade:26717:8636864000:ERROR:User Roles table contains more than 3 user roles. Please check it ASAP.
+2022-07-13 17:09:34,439:CustomerFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" sent to the function customer :"not customer" update_customer but its not a Customer object.
+2022-07-13 17:09:36,067:CustomerFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" used the function update_customer but the phone number "0545557007" already exists in the db.
+2022-07-13 17:09:37,714:CustomerFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" used the function update_customer but the credit card number "0000" already exists in the db.
+2022-07-13 17:09:41,036:CustomerFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" tried to use the function remove_ticket but the ticket "not ticket" that was sent is not a Ticket object.
+2022-07-13 17:09:42,678:CustomerFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" tried to use the function remove_ticket but the ticket "Ticket[id=None, flight_id=3, customer_id=3]" that was sent not exist in the db.
+2022-07-13 17:09:44,306:CustomerFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" tried to use the function remove_ticket but the ticket "Ticket[id=None, flight_id=1, customer_id=1]" that was sent not exist in the db.
+2022-07-13 17:09:47,563:CustomerFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" tried to use the function add_ticket but the flight has no remaining tickets
+2022-07-13 17:09:50,832:CustomerFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" tried to use the function add_ticket but the ticket "not ticket" that was sent to the function is not a Ticket object.
+2022-07-13 17:09:52,486:CustomerFacade:26717:8636864000:ERROR:The login token "LoginToken[id_=2, name="Uri", role="customers"]" tried to use the function add_ticket but the flight.id "4" that was sent to the function not exists in the db.
+2022-07-13 17:10:02,424:FacadeBase:26717:8636864000:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_parameters but the county ids "f" and "3" that was sent must be integers
+2022-07-13 17:10:04,076:FacadeBase:26717:8636864000:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_parameters but the county ids "3" and "r" that was sent must be integers
+2022-07-13 17:10:05,729:FacadeBase:26717:8636864000:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_parameters but the county ids "0" and "4" that was sent must be positive
+2022-07-13 17:10:07,366:FacadeBase:26717:8636864000:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_parameters but the the date "4" that was sent must be a Datetime object
+2022-07-13 17:10:15,596:FacadeBase:26717:8636864000:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_airline_by_id but the id "h" that was sent is not an integer.
+2022-07-13 17:10:17,224:FacadeBase:26717:8636864000:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_airline_by_id but the id "0" that was sent is not positive.
+2022-07-13 17:10:25,848:FacadeBase:26717:8636864000:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_country_by_id but the id "6" that was sent is not an integer.
+2022-07-13 17:10:27,720:FacadeBase:26717:8636864000:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_country_by_id but the id "0" that was sent is not positive.
+2022-07-13 17:10:31,001:FacadeBase:26717:8636864000:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function create_user but the user "notuser" that was sent must be instance if the class User.
+2022-07-13 17:10:32,643:FacadeBase:26717:8636864000:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function create_user but the user.username "Elad" that was sent already exists in the db.
+2022-07-13 17:10:34,305:FacadeBase:26717:8636864000:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function create_user but the user.email "elad@gmail.com" that was sent already exists in the db.
+2022-07-13 17:10:35,942:FacadeBase:26717:8636864000:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function create_user but the user.user_role "5" that was sent does not exist in the db.
+2022-07-13 17:10:39,201:FacadeBase:26717:8636864000:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_airline_id but the airline_id "not int" that was sent is not an integer.
+2022-07-13 17:10:40,849:FacadeBase:26717:8636864000:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_airline_id but the airline_id "0" that was sent is not positive.
+2022-07-13 17:10:42,492:FacadeBase:26717:8636864000:ERROR:The login token "LoginToken[id_=None, name="Anonymous", role="Anonymous"]" used the function get_flights_by_airline_id but the airline_id "7" that was sent is not exists in the db.
