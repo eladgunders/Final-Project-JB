@@ -3,3 +3,4 @@ __pycache__
 venv396/
 .idea/
 .DS_Store
+flight-logs.log
