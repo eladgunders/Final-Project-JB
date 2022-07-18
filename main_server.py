@@ -8,6 +8,7 @@ app = Flask(__name__)
 
 app.register_blueprint(anonymous, url_prefix="/anonymous")
 app.register_blueprint(admin, url_prefix="/admin")
+app.config['SECRET_KEY'] = 'SHHH KEEP IT SECRET'
 
 CORS(app)
 
