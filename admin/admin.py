@@ -52,12 +52,15 @@ def customers():
 
     if request.method == 'GET':
         rabbit_producer.publish({'id_': request_id, 'data': 'data'})  # data empty for now
-        lock_manager.lock_thread(request_id)
+        lock_manager.lock_thread(request_id)  # acquiring the thread
+        # after release getting the answer from app.config by the request id:
+        answer_from_core = current_app.config['threads_locks_dict'].pop(request_id)
         pass
 
     elif request.method == 'POST':
         rabbit_producer.publish({'id_': request_id, 'data': 'data'})  # data empty for now
         lock_manager.lock_thread(request_id)
+        answer_from_core = current_app.config['threads_locks_dict'].pop(request_id)
         pass
 
 

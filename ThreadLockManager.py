@@ -6,6 +6,7 @@ class ThreadLockManager:
     _lock = Lock()
 
     def __init__(self):
+        self.locks_dict = {}
         raise RuntimeError('Call instance() instead')
 
     @classmethod
@@ -25,4 +26,4 @@ class ThreadLockManager:
     def lock_thread(self, request_id):
         lock = Lock()  # creating a Lock instance
         self.locks_dict[request_id] = lock  # mapping in with the request id into the dict
-        lock.acquire()  # locking with thread
+        self.locks_dict[request_id].acquire()  # locking with thread
