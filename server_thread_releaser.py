@@ -7,7 +7,6 @@ from RabbitConsumerObject import RabbitConsumerObject
 from ThreadLockManager import ThreadLockManager
 
 import json
-from flask import current_app
 
 
 lock_manager = ThreadLockManager.get_instance()
@@ -21,10 +20,7 @@ def main():
 def callback(ch, method, properties, body):
     data = json.loads(body)  # reading the data
     request_id = data['id_']  # getting the request id
-    current_app.config['threads_locks_dict'][request_id] = data  # inserting the data with the id to the server dict
-
-    # releasing the right thread and deleting the lock from the lock_manager dict
-    lock_manager.locks_dict.pop(request_id).release()
+    lock_manager.handle_answer_release_thread(request_id=request_id, data=data)
     return
 
 

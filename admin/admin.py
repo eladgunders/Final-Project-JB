@@ -48,25 +48,25 @@ def home():
 @admin_token_required
 @admin.route('/customers', methods=['GET', 'POST'])  # get all customers, add customer
 def customers():
-    request_id = str(uuid.uuid4())
+    request_id: str = str(uuid.uuid4())
 
     if request.method == 'GET':
         rabbit_producer.publish({'id_': request_id, 'data': 'data'})  # data empty for now
         lock_manager.lock_thread(request_id)  # acquiring the thread
         # after release getting the answer from app.config by the request id:
-        answer_from_core = current_app.config['threads_locks_dict'].pop(request_id)
+        answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
         pass
 
     elif request.method == 'POST':
         rabbit_producer.publish({'id_': request_id, 'data': 'data'})  # data empty for now
         lock_manager.lock_thread(request_id)
-        answer_from_core = current_app.config['threads_locks_dict'].pop(request_id)
+        answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
         pass
 
 
 @admin_token_required
 @admin.route('/customers/<int:id_>', methods=['DELETE'])  # delete_customer
-def customer_by_id():
+def customer_by_id(id_):
     pass
 
 
@@ -78,7 +78,7 @@ def airlines():
 
 @admin_token_required
 @admin.route('/airlines/<int:id_>', methods=['GET', 'DELETE'])  # get airline by id, delete airline
-def airline_by_id():
+def airline_by_id(id_):
     pass
 
 
@@ -90,5 +90,5 @@ def admins():
 
 @admin_token_required
 @admin.route('/admin/<int:id_>', methods=['DELETE'])  # delete_admin
-def admin_by_id():
+def admin_by_id(id_):
     pass
