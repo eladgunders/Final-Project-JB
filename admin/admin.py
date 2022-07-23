@@ -32,6 +32,8 @@ def admin_token_required(f):
             payload = jwt.decode(token, current_app.config['SECRET_KEY'])
             if payload['role'] == 'Administrator':
                 return f(payload, *args, **kwargs)
+            else:
+                jsonify({'message': 'Token is not valid'}), 401
 
         except (jwt.InvalidTokenError, jwt.ExpiredSignature, jwt.DecodeError, KeyError):
             logger.logger.warning('A user tried to used a function that requires token but token is not valid.')

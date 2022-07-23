@@ -32,7 +32,9 @@ def airline_token_required(f):
         try:
             payload = jwt.decode(token, current_app.config['SECRET_KEY'])
             if payload['role'] == 'Airline Company':
-                return f(*args, **kwargs)
+                return f(payload, *args, **kwargs)
+            else:
+                jsonify({'message': 'Token is not valid'}), 401
 
         except (jwt.InvalidTokenError, jwt.ExpiredSignature, jwt.DecodeError, KeyError):
             logger.logger.warning('A user tried to used a function that requires token but token is not valid.')
@@ -41,6 +43,25 @@ def airline_token_required(f):
     return decorated
 
 
-@airline.route("/")
-def home():
+@airline.route('/')
+@airline_token_required
+def home(login_token):
     return render_template('airline/home.html')
+
+
+@airline.route('/flights', methods=['GET', 'POST'])
+@airline_token_required
+def flights(login_token):
+    pass
+
+
+@airline.route('/flights/<int:id_>', methods=['PATCH', 'DELETE'])
+@airline_token_required
+def flight_by_id(login_token, id_):
+    pass
+
+
+@airline.route('/airlines/<int:id_>', methods=['PATCH'])
+@airline_token_required
+def airline_by_id(login_token, id_):
+    pass
