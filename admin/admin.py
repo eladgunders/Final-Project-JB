@@ -40,14 +40,14 @@ def admin_token_required(f):
     return decorated
 
 
-@admin_token_required
 @admin.route('/')
+@admin_token_required
 def home():
     return render_template('admin/home.html')  # react page demo
 
 
-@admin_token_required
 @admin.route('/customers', methods=['GET', 'POST'])  # get all customers, add customer
+@admin_token_required
 def customers():
     request_id: str = str(uuid.uuid4())
 
@@ -66,8 +66,8 @@ def customers():
         return make_response(jsonify(answer_from_core), answer_from_core['status'])
 
 
-@admin_token_required
 @admin.route('/customers/<int:id_>', methods=['DELETE'])  # delete_customer
+@admin_token_required
 def customer_by_id(id_):
     request_id: str = str(uuid.uuid4())
 
@@ -78,8 +78,8 @@ def customer_by_id(id_):
         return make_response(jsonify(answer_from_core), answer_from_core['status'])
 
 
-@admin_token_required
 @admin.route('/airlines', methods=['POST'])  # add airline
+@admin_token_required
 def airlines():
     request_id: str = str(uuid.uuid4())
 
@@ -91,8 +91,8 @@ def airlines():
         return make_response(jsonify(answer_from_core), answer_from_core['status'])
 
 
-@admin_token_required
 @admin.route('/airlines/<int:id_>', methods=['DELETE'])  # delete airline
+@admin_token_required
 def airline_by_id(id_):
     request_id: str = str(uuid.uuid4())
 
@@ -103,8 +103,8 @@ def airline_by_id(id_):
         return make_response(jsonify(answer_from_core), answer_from_core['status'])
 
 
-@admin_token_required
 @admin.route('/admins', methods=['POST'])  # add_admin
+@admin_token_required
 def admins():
     request_id: str = str(uuid.uuid4())
 
@@ -116,8 +116,8 @@ def admins():
         return make_response(jsonify(answer_from_core), answer_from_core['status'])
 
 
-@admin_token_required
 @admin.route('/admin/<int:id_>', methods=['DELETE'])  # delete_admin
+@admin_token_required
 def admin_by_id(id_):
     request_id: str = str(uuid.uuid4())
 

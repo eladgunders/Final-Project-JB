@@ -1,12 +1,12 @@
 from flask import Flask, render_template, session, jsonify
 from flask_cors import CORS
-from anonymous.anonymous import anonymous
+from airline.airline import airline
 from admin.admin import admin
 
 
 app = Flask(__name__)
 
-app.register_blueprint(anonymous, url_prefix="/anonymous")
+app.register_blueprint(airline, url_prefix="/airline")
 app.register_blueprint(admin, url_prefix="/admin")
 app.config['SECRET_KEY']: str = 'SHHH KEEP IT SECRET'  # for the jwt encoding
 

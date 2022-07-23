@@ -298,3 +298,4 @@ connection to server at "localhost" (127.0.0.1), port 5431 failed: Connection re
 2022-07-13 19:13:46,064:AdministratorFacade:29959:8593729024:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but the user.user_role "2" that was sent is not 1(Customer).
 2022-07-13 19:13:47,712:AdministratorFacade:29959:8593729024:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but the user.user_role "2" that was sent is not 1(Customer).
 2022-07-13 19:13:49,362:AdministratorFacade:29959:8593729024:ERROR:The login token "LoginToken[id_=2, name="Boris", role="administrators"]" tried to use the function add_customer but the user.user_role "2" that was sent is not 1(Customer).
+2022-07-23 19:54:43,295:admin:10518:13090533376:INFO:A user tried to used a function that requires token but token is missing.
