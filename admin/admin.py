@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, jsonify, request, current_app
+from flask import Blueprint, render_template, jsonify, request, current_app, make_response
 from functools import wraps
 import jwt
 import uuid
@@ -51,44 +51,77 @@ def customers():
     request_id: str = str(uuid.uuid4())
 
     if request.method == 'GET':
-        rabbit_producer.publish({'id_': request_id, 'data': 'data'})  # data empty for now
+        rabbit_producer.publish({'id_': request_id, 'method': 'get', 'resource': 'customer'})
         lock_manager.lock_thread(request_id)  # acquiring the thread
         # after release getting the answer from app.config by the request id:
         answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
-        pass
+        return make_response(jsonify(answer_from_core), answer_from_core['status'])
 
     elif request.method == 'POST':
-        rabbit_producer.publish({'id_': request_id, 'data': 'data'})  # data empty for now
+        new_customer = request.get_json()
+        rabbit_producer.publish({'id_': request_id, 'method': 'post', 'resource': 'customer', 'data': new_customer})
         lock_manager.lock_thread(request_id)
         answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
-        pass
+        return make_response(jsonify(answer_from_core), answer_from_core['status'])
 
 
 @admin_token_required
 @admin.route('/customers/<int:id_>', methods=['DELETE'])  # delete_customer
 def customer_by_id(id_):
-    pass
+    request_id: str = str(uuid.uuid4())
+
+    if request.method == 'DELETE':
+        rabbit_producer.publish({'id_': request_id, 'method': 'delete', 'resource': 'customer', 'resource_id': id_})
+        lock_manager.lock_thread(request_id)
+        answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
+        return make_response(jsonify(answer_from_core), answer_from_core['status'])
 
 
 @admin_token_required
 @admin.route('/airlines', methods=['POST'])  # add airline
 def airlines():
-    pass
+    request_id: str = str(uuid.uuid4())
+
+    if request.method == 'POST':
+        new_airline = request.get_json()
+        rabbit_producer.publish({'id_': request_id, 'method': 'post', 'resource': 'airline', 'data': new_airline})
+        lock_manager.lock_thread(request_id)
+        answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
+        return make_response(jsonify(answer_from_core), answer_from_core['status'])
 
 
 @admin_token_required
-@admin.route('/airlines/<int:id_>', methods=['GET', 'DELETE'])  # get airline by id, delete airline
+@admin.route('/airlines/<int:id_>', methods=['DELETE'])  # delete airline
 def airline_by_id(id_):
-    pass
+    request_id: str = str(uuid.uuid4())
+
+    if request.method == 'DELETE':
+        rabbit_producer.publish({'id_': request_id, 'method': 'delete', 'resource': 'airline', 'resource_id': id_})
+        lock_manager.lock_thread(request_id)
+        answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
+        return make_response(jsonify(answer_from_core), answer_from_core['status'])
 
 
 @admin_token_required
 @admin.route('/admins', methods=['POST'])  # add_admin
 def admins():
-    pass
+    request_id: str = str(uuid.uuid4())
+
+    if request.method == 'POST':
+        new_admin = request.get_json()
+        rabbit_producer.publish({'id_': request_id, 'method': 'post', 'resource': 'admin', 'data': new_admin})
+        lock_manager.lock_thread(request_id)
+        answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
+        return make_response(jsonify(answer_from_core), answer_from_core['status'])
 
 
 @admin_token_required
 @admin.route('/admin/<int:id_>', methods=['DELETE'])  # delete_admin
 def admin_by_id(id_):
-    pass
+    request_id: str = str(uuid.uuid4())
+
+    if request.method == 'DELETE':
+        rabbit_producer.publish({'id_': request_id, 'method': 'delete', 'resource': 'admin', 'resource_id': id_})
+        lock_manager.lock_thread(request_id)
+        answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
+        return make_response(jsonify(answer_from_core), answer_from_core['status'])
