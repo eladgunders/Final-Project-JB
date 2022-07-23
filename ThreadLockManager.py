@@ -31,7 +31,7 @@ class ThreadLockManager:
         lock = Lock()  # creating a Lock instance
         with self._locks_dict_lock:
             self.locks_dict[request_id] = lock  # mapping in with the request id into the dict
-        self.locks_dict[request_id].acquire()  # locking with thread
+        lock.acquire()  # locking with thread
 
     def handle_answer_release_thread(self, request_id: str, data: dict):
         with self._answers_from_core_lock:
