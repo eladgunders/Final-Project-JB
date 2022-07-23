@@ -31,7 +31,7 @@ def admin_token_required(f):
         try:
             payload = jwt.decode(token, current_app.config['SECRET_KEY'])
             if payload['role'] == 'Administrator':
-                return f(*args, **kwargs)
+                return f(payload, *args, **kwargs)
 
         except (jwt.InvalidTokenError, jwt.ExpiredSignature, jwt.DecodeError, KeyError):
             logger.logger.warning('A user tried to used a function that requires token but token is not valid.')
@@ -42,17 +42,18 @@ def admin_token_required(f):
 
 @admin.route('/')
 @admin_token_required
-def home():
+def home(login_token):
     return render_template('admin/home.html')  # react page demo
 
 
 @admin.route('/customers', methods=['GET', 'POST'])  # get all customers, add customer
 @admin_token_required
-def customers():
+def customers(login_token):
     request_id: str = str(uuid.uuid4())
 
     if request.method == 'GET':
-        rabbit_producer.publish({'id_': request_id, 'method': 'get', 'resource': 'customer'})
+        rabbit_producer.publish({'id_': request_id, 'login_token': login_token, 'method': 'get',
+                                 'resource': 'customer'})
         lock_manager.lock_thread(request_id)  # acquiring the thread
         # after release getting the answer from app.config by the request id:
         answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
@@ -60,7 +61,8 @@ def customers():
 
     elif request.method == 'POST':
         new_customer = request.get_json()
-        rabbit_producer.publish({'id_': request_id, 'method': 'post', 'resource': 'customer', 'data': new_customer})
+        rabbit_producer.publish({'id_': request_id, 'login_token': login_token, 'method': 'post',
+                                 'resource': 'customer', 'data': new_customer})
         lock_manager.lock_thread(request_id)
         answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
         return make_response(jsonify(answer_from_core), answer_from_core['status'])
@@ -68,11 +70,12 @@ def customers():
 
 @admin.route('/customers/<int:id_>', methods=['DELETE'])  # delete_customer
 @admin_token_required
-def customer_by_id(id_):
+def customer_by_id(login_token, id_):
     request_id: str = str(uuid.uuid4())
 
     if request.method == 'DELETE':
-        rabbit_producer.publish({'id_': request_id, 'method': 'delete', 'resource': 'customer', 'resource_id': id_})
+        rabbit_producer.publish({'id_': request_id, 'login_token': login_token, 'method': 'delete',
+                                 'resource': 'customer', 'resource_id': id_})
         lock_manager.lock_thread(request_id)
         answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
         return make_response(jsonify(answer_from_core), answer_from_core['status'])
@@ -80,12 +83,13 @@ def customer_by_id(id_):
 
 @admin.route('/airlines', methods=['POST'])  # add airline
 @admin_token_required
-def airlines():
+def airlines(login_token):
     request_id: str = str(uuid.uuid4())
 
     if request.method == 'POST':
         new_airline = request.get_json()
-        rabbit_producer.publish({'id_': request_id, 'method': 'post', 'resource': 'airline', 'data': new_airline})
+        rabbit_producer.publish({'id_': request_id, 'login_token': login_token, 'method': 'post',
+                                 'resource': 'airline', 'data': new_airline})
         lock_manager.lock_thread(request_id)
         answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
         return make_response(jsonify(answer_from_core), answer_from_core['status'])
@@ -93,11 +97,12 @@ def airlines():
 
 @admin.route('/airlines/<int:id_>', methods=['DELETE'])  # delete airline
 @admin_token_required
-def airline_by_id(id_):
+def airline_by_id(login_token, id_):
     request_id: str = str(uuid.uuid4())
 
     if request.method == 'DELETE':
-        rabbit_producer.publish({'id_': request_id, 'method': 'delete', 'resource': 'airline', 'resource_id': id_})
+        rabbit_producer.publish({'id_': request_id, 'login_token': login_token, 'method': 'delete',
+                                 'resource': 'airline', 'resource_id': id_})
         lock_manager.lock_thread(request_id)
         answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
         return make_response(jsonify(answer_from_core), answer_from_core['status'])
@@ -105,12 +110,13 @@ def airline_by_id(id_):
 
 @admin.route('/admins', methods=['POST'])  # add_admin
 @admin_token_required
-def admins():
+def admins(login_token):
     request_id: str = str(uuid.uuid4())
 
     if request.method == 'POST':
         new_admin = request.get_json()
-        rabbit_producer.publish({'id_': request_id, 'method': 'post', 'resource': 'admin', 'data': new_admin})
+        rabbit_producer.publish({'id_': request_id, 'login_token': login_token, 'method': 'post',
+                                 'resource': 'admin', 'data': new_admin})
         lock_manager.lock_thread(request_id)
         answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
         return make_response(jsonify(answer_from_core), answer_from_core['status'])
@@ -118,11 +124,12 @@ def admins():
 
 @admin.route('/admin/<int:id_>', methods=['DELETE'])  # delete_admin
 @admin_token_required
-def admin_by_id(id_):
+def admin_by_id(login_token, id_):
     request_id: str = str(uuid.uuid4())
 
     if request.method == 'DELETE':
-        rabbit_producer.publish({'id_': request_id, 'method': 'delete', 'resource': 'admin', 'resource_id': id_})
+        rabbit_producer.publish({'id_': request_id, 'login_token': login_token, 'method': 'delete',
+                                 'resource': 'admin', 'resource_id': id_})
         lock_manager.lock_thread(request_id)
         answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
         return make_response(jsonify(answer_from_core), answer_from_core['status'])
