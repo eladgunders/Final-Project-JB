@@ -40,6 +40,7 @@ def admin_token_required(f):
     return decorated
 
 
+@admin_token_required
 @admin.route('/')
 def home():
     return render_template('admin/home.html')  # react page demo
