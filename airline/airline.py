@@ -49,19 +49,60 @@ def home(login_token):
     return render_template('airline/home.html')
 
 
-@airline.route('/flights', methods=['GET', 'POST'])
+@airline.route('/flights', methods=['GET', 'POST'])   # get airline flights, add flight
 @airline_token_required
 def flights(login_token):
-    pass
+    request_id: str = str(uuid.uuid4())
+
+    if request.method == 'GET':
+        rabbit_producer.publish({'id_': request_id, 'login_token': login_token, 'method': 'get',
+                                 'resource': 'flight'})
+        lock_manager.lock_thread(request_id)  # acquiring the thread
+        # after release getting the answer from app.config by the request id:
+        answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
+        return make_response(jsonify(answer_from_core), answer_from_core['status'])
+
+    elif request.method == 'POST':
+        new_flight: dict = request.get_json()
+        rabbit_producer.publish({'id_': request_id, 'login_token': login_token, 'method': 'post',
+                                 'resource': 'flight', 'data': new_flight})
+        lock_manager.lock_thread(request_id)
+        answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
+        return make_response(jsonify(answer_from_core), answer_from_core['status'])
 
 
-@airline.route('/flights/<int:id_>', methods=['PATCH', 'DELETE'])
+@airline.route('/flights/<int:id_>', methods=['PATCH', 'DELETE'])  # update and delete flight
 @airline_token_required
 def flight_by_id(login_token, id_):
-    pass
+    request_id: str = str(uuid.uuid4())
+
+    if request.method == 'PATCH':
+        patched_flight: dict = request.get_json()
+        rabbit_producer.publish({'id_': request_id, 'login_token': login_token, 'method': 'patch',
+                                 'resource': 'flight', 'data': patched_flight})
+        lock_manager.lock_thread(request_id)  # acquiring the thread
+        # after release getting the answer from app.config by the request id:
+        answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
+        return make_response(jsonify(answer_from_core), answer_from_core['status'])
+
+    elif request.method == 'DELETE':
+        rabbit_producer.publish({'id_': request_id, 'login_token': login_token, 'method': 'delete',
+                                 'resource': 'flight', 'resource_id': id_})
+        lock_manager.lock_thread(request_id)
+        answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
+        return make_response(jsonify(answer_from_core), answer_from_core['status'])
 
 
-@airline.route('/airlines/<int:id_>', methods=['PATCH'])
+@airline.route('/airlines/<int:id_>', methods=['PATCH'])  # update airline
 @airline_token_required
 def airline_by_id(login_token, id_):
-    pass
+    request_id: str = str(uuid.uuid4())
+
+    if request.method == 'PATCH':
+        patched_airline: dict = request.get_json()
+        rabbit_producer.publish({'id_': request_id, 'login_token': login_token, 'method': 'patch',
+                                 'resource': 'airline', 'data': patched_airline})
+        lock_manager.lock_thread(request_id)  # acquiring the thread
+        # after release getting the answer from app.config by the request id:
+        answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
+        return make_response(jsonify(answer_from_core), answer_from_core['status'])
