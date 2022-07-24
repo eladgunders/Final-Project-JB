@@ -80,8 +80,7 @@ def flight_by_id(login_token, id_):
         patched_flight: dict = request.get_json()
         rabbit_producer.publish({'id_': request_id, 'login_token': login_token, 'method': 'patch',
                                  'resource': 'flight', 'data': patched_flight})
-        lock_manager.lock_thread(request_id)  # acquiring the thread
-        # after release getting the answer from app.config by the request id:
+        lock_manager.lock_thread(request_id)
         answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
         return make_response(jsonify(answer_from_core), answer_from_core['status'])
 
@@ -102,7 +101,6 @@ def airline_by_id(login_token, id_):
         patched_airline: dict = request.get_json()
         rabbit_producer.publish({'id_': request_id, 'login_token': login_token, 'method': 'patch',
                                  'resource': 'airline', 'data': patched_airline})
-        lock_manager.lock_thread(request_id)  # acquiring the thread
-        # after release getting the answer from app.config by the request id:
+        lock_manager.lock_thread(request_id)
         answer_from_core: dict = lock_manager.get_answer(request_id=request_id)
         return make_response(jsonify(answer_from_core), answer_from_core['status'])
