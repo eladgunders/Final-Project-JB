@@ -62,7 +62,7 @@ def customers(login_token):
         return make_response(jsonify(answer_from_core), answer_from_core['status'])
 
     elif request.method == 'POST':
-        new_customer = request.get_json()
+        new_customer: dict = request.get_json()
         rabbit_producer.publish({'id_': request_id, 'login_token': login_token, 'method': 'post',
                                  'resource': 'customer', 'data': new_customer})
         lock_manager.lock_thread(request_id)
@@ -89,7 +89,7 @@ def airlines(login_token):
     request_id: str = str(uuid.uuid4())
 
     if request.method == 'POST':
-        new_airline = request.get_json()
+        new_airline: dict = request.get_json()
         rabbit_producer.publish({'id_': request_id, 'login_token': login_token, 'method': 'post',
                                  'resource': 'airline', 'data': new_airline})
         lock_manager.lock_thread(request_id)
@@ -116,7 +116,7 @@ def admins(login_token):
     request_id: str = str(uuid.uuid4())
 
     if request.method == 'POST':
-        new_admin = request.get_json()
+        new_admin: dict = request.get_json()
         rabbit_producer.publish({'id_': request_id, 'login_token': login_token, 'method': 'post',
                                  'resource': 'admin', 'data': new_admin})
         lock_manager.lock_thread(request_id)
